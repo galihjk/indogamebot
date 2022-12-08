@@ -8,6 +8,8 @@ if(!empty($_GET['tesinsert'])){
     echo data_insert("tezt",[
         'name' => "name" . $_GET['tesinsert'],
         'address' => "address" . $_GET['tesinsert'],
+        'we' => "we" . $_GET['tesinsert'],
+        'om' => "om" . $_GET['tesinsert'],
     ]);
 }
 if(!empty($_GET['tesinsert2'])){
@@ -24,8 +26,8 @@ if(!empty($_GET['tesfilter'])){
     echo "<pre>";
     print_r(data_find(
         "tezt",
-        ['name'=>'nameGalih','qwe'=>'zxcAsd'],
-        1
+        ['name'=>'nameGalih','qwe'=>'zxcAsd','we'=>'we'],
+        100
     ));
 }
 
