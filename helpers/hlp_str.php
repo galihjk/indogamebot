@@ -31,3 +31,16 @@ function isDiakhiri($string, $diakhiri, $caseSensitive = true){
 		return false;
 	}
 }
+
+function str_compare($string_haystack, $string_needle, $type){
+	if($type == "exact") return ($string_haystack == $string_needle);
+	if($type == "insensitive") return (strtolower($string_haystack) == strtolower($string_needle));
+	if($type == "contains_sensitive") return str_contains($string_haystack, $string_needle);
+	if($type == "contains_insensitive") return str_contains(strtolower($string_haystack), strtolower($string_needle));
+	if($type == "first_sensitive") return isDiawali($string_haystack, $string_needle, true);
+	if($type == "first_insensitive") return isDiawali($string_haystack, $string_needle, false);
+	if($type == "last_sensitive") return isDiakhiri($string_haystack, $string_needle, true);
+	if($type == "last_insensitive") return isDiakhiri($string_haystack, $string_needle, false);
+	echo "Type ERROR: '$type'";
+	return false;
+}
