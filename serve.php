@@ -37,6 +37,6 @@ else{
             'chat_id' => $config['admingroup'],
             'text' => "Server Stopped. \nSTART: ".getConfig('host', "")."/start.php",
             'disable_web_page_preview' => true,
-        ]);
+        ],$token);
     }
 }

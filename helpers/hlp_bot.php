@@ -47,7 +47,7 @@ function DapatkanUpdate($offset,$bot_token = "default")
     
     $url = BotKirim($bot_token,"getUpdates")."?offset=".$offset;
     
-    $hasil =  KirimPerintah("getUpdates",['offset'=>$offset]);
+    $hasil =  KirimPerintah("getUpdates",['offset'=>$offset],$bot_token);
     
     if (!empty($hasil["ok"])){
         return $hasil["result"];
@@ -106,20 +106,20 @@ function KirimPerintah($perintah,$data,$bot_token = "default"){
     return $debug;  
 }
 
-function checkPrivateChatOnly($chat_id, $command, $message_id){
-	global $config;
-	if(isDiawali($chat_id,"-")){
-		$bot_username = $config['bot_username'];
-		KirimPerintah('sendMessage',[
-			'chat_id' => $chat_id,
-			'text'=> "<a href='t.me/$bot_username?start=cmd_$command'>Gunakan command ini di private chat</a>",
-			'parse_mode'=>'HTML',
-			'reply_to_message_id' => $message_id
-		]);
-		return false;
-	}
-	return true;
-}
+// function checkPrivateChatOnly($chat_id, $command, $message_id){
+// 	global $config;
+// 	if(isDiawali($chat_id,"-")){
+// 		$bot_username = $config['bot_username'];
+// 		KirimPerintah('sendMessage',[
+// 			'chat_id' => $chat_id,
+// 			'text'=> "<a href='t.me/$bot_username?start=cmd_$command'>Gunakan command ini di private chat</a>",
+// 			'parse_mode'=>'HTML',
+// 			'reply_to_message_id' => $message_id
+// 		]);
+// 		return false;
+// 	}
+// 	return true;
+// }
 
 function genKeyBoard($array, $max_col = 1){
 	if(!is_array($array)){
