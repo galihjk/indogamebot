@@ -4,8 +4,9 @@
 
 include_once("helpers/hlp_data.php");
 $data = loadData("srvstatus");
-$timelag = time()-($srvstatus['time'] ?? 0);
-if($timelag > 2){
+$timelag = time()-($data['time'] ?? 0);
+$data['TimeDif'] = $timelag;
+if($timelag > 3){
     $data['STATUS'] = "OFF";
 }
 else{
