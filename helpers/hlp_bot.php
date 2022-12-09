@@ -37,15 +37,9 @@ function KirimPerintahCurl($bot_token,$perintah,$data){
 }
 
 // Perintah untuk mendapatkan Update dari Api Telegram.
-function DapatkanUpdate($offset,$bot_token = "default") 
-{
-    global $config;
-
-    if($bot_token == "default"){
-        $bot_token = $config['bot_token'];
-    }
-    
-    $url = BotKirim($bot_token,"getUpdates")."?offset=".$offset;
+function DapatkanUpdate($offset,$bot_token) 
+{    
+    // $url = BotKirim($bot_token,"getUpdates")."?offset=".$offset;
     
     $hasil =  KirimPerintah("getUpdates",['offset'=>$offset],$bot_token);
     
@@ -56,16 +50,10 @@ function DapatkanUpdate($offset,$bot_token = "default")
     }
 }
 
-function KirimPerintah($perintah,$data,$bot_token = "default"){
-    global $config;
-    
+function KirimPerintah($perintah,$data,$bot_token){    
 	if(empty($data)){
 		$data = [];
 	}
-
-    if($bot_token == "default"){
-        $bot_token = $config['bot_token'];
-    }
 
 	//set data yang berupa array menjadi json agar sesuai dengan api bot telegram 
 	foreach($data as $key => $val){
