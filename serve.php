@@ -4,6 +4,7 @@ date_default_timezone_set('Asia/Jakarta');
 include_once("helpers/hlp_config.php");
 include_once("helpers/hlp_data.php");
 include_once("helpers/hlp_bot.php");
+include_once("helpers/hlp_server.php");
 
 if(empty($_GET['runserver']) or $_GET['runserver'] !== getConfig('servercode', "")){
     die("wrong access");

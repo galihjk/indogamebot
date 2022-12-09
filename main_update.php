@@ -11,7 +11,7 @@ if($message_text == "/srvstatus"){
     $srvstatus = loadData("srvstatus");
     KirimPerintah('sendMessage',[
         'chat_id' => $chat_id,
-        'text' => 'srvstatus: '.print_r($srvstatus, true)."\nLag ".time()-($srvstatus['time'] ?? 0),
+        'text' => 'srvstatus: '.print_r($srvstatus, true)."\nLag ".(time()-($srvstatus['time'] ?? 0)),
         'disable_web_page_preview' => true,
     ],$token);
 }
