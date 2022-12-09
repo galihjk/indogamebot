@@ -21,7 +21,7 @@ if(!empty($srvstatus['run_code'])){
         include("run.php");
         $runserver = getConfig('servercode', "");
         $serverurl = getConfig('host', "")."/serve.php?runserver=$runserver&code=$run_code";
-        // get_without_wait($serverurl);
+        get_without_wait($serverurl);
         echo "<a href='$serverurl'>$serverurl</a>";
     }
     else{
@@ -35,7 +35,8 @@ else{
         $id_developer = $config['developer'];
         KirimPerintah('sendMessage',[
             'chat_id' => $config['admingroup'],
-            'text' => "Server Stopped. \nSTART: ".getConfig('host', "")."/start.php",
+            // 'text' => "Server Stopped. \nSTART: ".getConfig('host', "")."/start.php",
+            'text' => "Server Stopped.",
             'disable_web_page_preview' => true,
         ],$token);
     }

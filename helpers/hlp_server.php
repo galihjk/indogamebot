@@ -50,7 +50,8 @@ function server_start($check_already_running=true, $drop_pending = true){
             $token = $config['token'];
             KirimPerintah('sendMessage',[
                 'chat_id' => $config['admingroup'],
-                'text' => 'Server Started: '.$run_code . " \nSTOP: ".getConfig('host', "")."/stop.php",
+                // 'text' => 'Server Started: '.$run_code . " \nSTOP: ".getConfig('host', "")."/stop.php",
+                'text' => 'Server Started: '.$run_code,
                 'disable_web_page_preview' => true,
             ],$token);
         }
@@ -59,7 +60,7 @@ function server_start($check_already_running=true, $drop_pending = true){
     saveData("srvstatus",$srvstatus);
     $runserver = getConfig('servercode', "");
     $srvurl = getConfig('host', "")."/serve.php?runserver=$runserver&code=$run_code";
-    // get_without_wait($srvurl);
+    get_without_wait($srvurl);
     return $srvurl;
 }
 

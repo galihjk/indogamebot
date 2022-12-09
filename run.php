@@ -4,9 +4,6 @@ include_once("helpers/hlp_config.php");
 include_once("helpers/hlp_data.php");
 include_once("helpers/hlp_bot.php");
 
-
-$updates = DapatkanUpdate($update_id, $token);
-
 $bot_config = getConfig('bot', []);
 foreach($bot_config as $bot=>$config){
     $token = $config['token'];
