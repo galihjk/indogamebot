@@ -1,6 +1,6 @@
 <?php
 include_once("helpers/hlp_server.php");
-server_start();
+echo server_start();
 ?>
 <h1>Server Started</h1>
 <script>

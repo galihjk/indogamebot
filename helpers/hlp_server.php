@@ -58,7 +58,9 @@ function server_start($check_already_running=true, $drop_pending = true){
     
     saveData("srvstatus",$srvstatus);
     $runserver = getConfig('servercode', "");
-    get_without_wait(getConfig('host', "")."/serve.php?runserver=$runserver&code=$run_code");
+    $srvurl = getConfig('host', "")."/serve.php?runserver=$runserver&code=$run_code";
+    // get_without_wait($srvurl);
+    return $srvurl;
 }
 
 function get_without_wait($url)
