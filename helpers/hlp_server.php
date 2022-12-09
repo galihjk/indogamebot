@@ -52,7 +52,7 @@ function server_start($check_already_running=true, $drop_pending = true){
                 'chat_id' => $config['admingroup'],
                 'text' => 'Server Started: '.$run_code . " \nSTOP: ".getConfig('host', "")."/stop.php",
                 'disable_web_page_preview' => true,
-            ]);
+            ],$token);
         }
     }
     
