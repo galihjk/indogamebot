@@ -48,12 +48,14 @@ function server_start($check_already_running=true, $drop_pending = true){
     if($starting){
         foreach($bot_config as $bot=>$config){
             $token = $config['token'];
-            KirimPerintah('sendMessage',[
-                'chat_id' => $config['admingroup'],
-                // 'text' => 'Server Started: '.$run_code . " \nSTOP: ".getConfig('host', "")."/stop.php",
-                'text' => 'Server Started: '.$run_code,
-                'disable_web_page_preview' => true,
-            ],$token);
+            /*
+                KirimPerintah('sendMessage',[
+                    'chat_id' => $config['admingroup'],
+                    // 'text' => 'Server Started: '.$run_code . " \nSTOP: ".getConfig('host', "")."/stop.php",
+                    'text' => 'Server Started: '.$run_code,
+                    'disable_web_page_preview' => true,
+                ],$token);
+            */
         }
     }
     
