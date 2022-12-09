@@ -1,11 +1,11 @@
-<?php echo "hello world"; //--tes
-
+<?php echo "<h1>hello world! ~@galihjk</h1>"; //--tes
+die();
 $folder = "data/tes/nama/";
 
 include_once("helpers/hlp_data.php");
 
 if(!empty($_GET['tesinsert'])){
-    echo data_insert("tezt",[
+    echo sdata_insert("tezt",[
         'name' => "name" . $_GET['tesinsert'],
         'address' => "address" . $_GET['tesinsert'],
         'we' => "we" . $_GET['tesinsert'],
@@ -13,18 +13,18 @@ if(!empty($_GET['tesinsert'])){
     ]);
 }
 if(!empty($_GET['tesinsert2'])){
-    echo data_insert("tezt",[
+    echo sdata_insert("tezt",[
         'qwe' => "zxc" . $_GET['tesinsert2'],
     ]);
 }
 if(!empty($_GET['get'])){
-    print_r( data_get_one("tezt",$_GET['get']));
-    data_update("tezt",$_GET['get'],['updated'=>time()]);
-    print_r( data_get_one("tezt",$_GET['get']));
+    print_r( sdata_get_one("tezt",$_GET['get']));
+    sdata_update("tezt",$_GET['get'],['updated'=>time()]);
+    print_r( sdata_get_one("tezt",$_GET['get']));
 }
 if(!empty($_GET['tesfilter'])){
     echo "<pre>";
-    print_r(data_find(
+    print_r(sdata_find(
         "tezt",
         ['name'=>'nameGalih','qwe'=>'zxcAsd','we'=>'we'],
         100
