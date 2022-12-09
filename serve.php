@@ -10,7 +10,7 @@ if(empty($_GET['runserver']) or $_GET['runserver'] !== getConfig('servercode', "
     die("wrong access");
 }
 
-sleep(rand(1,2));
+sleep(2);
 
 $srvstatus = loadData("srvstatus");
 if(!empty($srvstatus['run_code'])){
