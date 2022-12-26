@@ -10,19 +10,22 @@ if(empty($_GET['runserver']) or $_GET['runserver'] !== getConfig('servercode', "
     die("wrong access");
 }
 
-sleep(3);
+sleep(rand(2,3));
 
 $srvstatus = loadData("srvstatus");
 if(!empty($srvstatus['run_code'])){
     $run_code = $srvstatus['run_code'];
     if($_GET['code'] == $run_code){
+        $jeda = abs(time() - ($srvstatus['time'] ?? 0));
         $srvstatus['time'] = time();
         saveData("srvstatus",$srvstatus);
-        // file_get_contents(getConfig('host', "")."/run.php");
-        include("run.php");
         $runserver = getConfig('servercode', "");
         $serverurl = getConfig('host', "")."/serve.php?runserver=$runserver&code=$run_code";
-        get_without_wait($serverurl);
+
+        $restartbot	= false;
+        include("run.php");
+
+        // get_without_wait($serverurl);
         echo "<a href='$serverurl'>$serverurl</a>";
     }
     else{

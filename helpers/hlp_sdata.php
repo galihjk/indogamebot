@@ -89,11 +89,22 @@ function sdata_update($table, $id, $sdata_update){
             mkdir($folder, 0777, true);
         }
     }
+    $result = [];
     foreach($sdata_update as $field=>$val){
         file_put_contents("sdata/$table/$field/$id",$val);
+        $result["sdata/$table/$field/$id"] = true;
     }
+    return $result;
 }
 
+function sdata_update_filtered($table, $filter, $sdata_update, $limit){
+    $ids = sdata_get_filtered_ids($table, $filter, $limit, "exact");
+    $result = [];
+    foreach($ids as $id){
+        $result[] = sdata_update($table, $id, $sdata_update);
+    }
+    return $result;
+}
 
 function sdata_find($table, $filter, $limit, $return_fields = [], $type = "exact"){
     if(!file_exists("sdata/$table/$find_field")){
@@ -106,16 +117,21 @@ function sdata_find($table, $filter, $limit, $return_fields = [], $type = "exact
             $return_fields[] = $item;
         }
     }
-    $ids = [];
-    $filtercheck = $filter;
-    $currentcount = 0;
-    $current_id_check = 0;
-    sdata_filtercheck($table, $ids, $filtercheck, $current_id_check, $currentcount, $limit, $type);
+    $ids = sdata_get_filtered_ids($table, $filter, $limit, $type);
     $sdata_got = [];
     foreach($ids as $id){
         $sdata_got[$id] = sdata_get_one($table, $id, $return_fields);
     }
     return $sdata_got;
+}
+
+function sdata_get_filtered_ids($table, $filter, $limit, $type){
+    $ids = [];
+    $filtercheck = $filter;
+    $currentcount = 0;
+    $current_id_check = 0;
+    sdata_filtercheck($table, $ids, $filtercheck, $current_id_check, $currentcount, $limit, $type);
+    return $ids;
 }
 
 function sdata_filtercheck($table, &$ids, &$filtercheck, &$current_id_check, &$currentcount, $limit, $type){
@@ -188,4 +204,42 @@ function sdata_find_one($table, $filter, $return_fields = [], $type = "exact"){
         }
     }
     return $sdata_got;
+}
+
+function sdata_count($table, $field){
+    $folder = "sdata/$table/$field/";
+    if(!file_exists($folder)) return 0;
+    $scandir = scandir($folder);
+    if(empty($scandir)){
+        return 0;
+    }
+    else{
+        return count($scandir)-2;
+    }
+}
+
+function sdata_delete($table, $id){
+    $fields = [];
+    $scandir = scandir("sdata/$table/");
+    foreach($scandir as $item){
+        if(str_contains($item, '.')) continue;
+        $fields[] = $item;
+    }
+    foreach($fields as $field){
+        $folder = "sdata_deleted/$table/$field/";
+        if(!file_exists($folder)){
+            mkdir($folder, 0777, true);
+        }
+        rename("sdata/$table/$field/$id", "$folder$id");
+    }
+    return true;
+}
+
+function sdata_delete_filtered($table, $filter, $limit, $type = "exact"){
+    $ids = sdata_get_filtered_ids($table, $filter, $limit, $type);
+    $result = [];
+    foreach($ids as $id){
+        $result[] = sdata_delete($table, $id);
+    }
+    return $result;
 }

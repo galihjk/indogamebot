@@ -245,3 +245,7 @@ function inlineKeyBoard($array, $max_col = 0){
 	$encodedKeyboard = json_encode($keyboard);
 	return $encodedKeyboard;
 }
+
+function KirimPerintahX($token,$perintah,$data){
+    return KirimPerintah($perintah,$data,$token);
+};
