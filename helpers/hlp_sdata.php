@@ -54,7 +54,7 @@ function sdata_get_one($table, $id, $fields = [], $refresh = false){
         }
         else{
             foreach($fields as $field){
-                if($field!='id') $sdata_got[$field] = $sdata_global[$table][$id][$field];
+                $sdata_got[$field] = $sdata_global[$table][$id][$field];
             }
             return $sdata_got;
         }
@@ -68,6 +68,7 @@ function sdata_get_one($table, $id, $fields = [], $refresh = false){
             }
         }
         foreach($fields as $field){
+            if($field == 'id') continue;
             $value = "";
             $value_file = "sdata/$table/$field/$id";
             if(file_exists($value_file)){
