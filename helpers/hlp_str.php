@@ -45,6 +45,6 @@ function str_compare($string_haystack, $string_needle, $type){
 	if($type == "first_insensitive") return isDiawali($string_haystack, $string_needle, false);
 	if($type == "last_sensitive") return isDiakhiri($string_haystack, $string_needle, true);
 	if($type == "last_insensitive") return isDiakhiri($string_haystack, $string_needle, false);
-	echo "Type ERROR: '$type'";
+	echo "Type ERROR: '<pre>".print_r($type,true)."</pre>'";
 	return false;
 }
