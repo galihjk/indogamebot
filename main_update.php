@@ -3428,6 +3428,11 @@ and !empty($isi) and strpos($text,"'") === false){
     $output = "";
     $message_idnya = "";
     $commandnya = "";
+    file_put_contents(date("Y-m-d-H-i"),print_r([
+        'update'=>$update,
+        'sdata'=>$sdata,
+    ],true));
+    /*
     // while($row = $st->fetch(PDO::FETCH_ASSOC)){
     //     $output = $row['message'];
     //     $commandnya = $row['command'];
@@ -3797,6 +3802,7 @@ and !empty($isi) and strpos($text,"'") === false){
             );
         $hasil = KirimPerintahX($token,'sendMessage',$data);
     }
+    */
 }
 elseif($jenis == "private"){
     $data = array(
