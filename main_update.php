@@ -3348,7 +3348,8 @@ or strpos($isi,"@indogamebot") !== false
         'disable_web_page_preview'=>true,
         );
     $hasil = KirimPerintahX($token,'sendMessage',$data);
-    $message_out = json_decode($hasil,true);
+    // $message_out = json_decode($hasil,true);
+    $message_out = $hasil;
     $admin_mentions[$keynya."l".$message_id]=$message_out['result']['message_id'];
 }
 
@@ -3382,7 +3383,7 @@ and !empty($isi) and strpos($text,"'") === false){
             'message' => "~is_not_null",
             'case_sensitive' => 0,
             'whole_word'=>0,
-        ],1,[
+        ],[
             'command', 'message', 'reply_mode'
         ],"contains_insensitive");
     }
@@ -3393,7 +3394,7 @@ and !empty($isi) and strpos($text,"'") === false){
             'message' => "~is_not_null",
             'case_sensitive' => 0,
             'whole_word'=>2,
-        ],1,[
+        ],[
             'command', 'message', 'reply_mode'
         ],"first_insensitive");
     }
@@ -3404,7 +3405,7 @@ and !empty($isi) and strpos($text,"'") === false){
             'message' => "~is_not_null",
             'case_sensitive' => 1,
             'whole_word'=>1,
-        ],1,[
+        ],[
             'command', 'message', 'reply_mode'
         ],"exact");
     }
@@ -3415,7 +3416,7 @@ and !empty($isi) and strpos($text,"'") === false){
             'message' => "~is_not_null",
             'case_sensitive' => 1,
             'whole_word'=>0,
-        ],1,[
+        ],[
             'command', 'message', 'reply_mode'
         ],"contains_sensitive");
     }
@@ -3426,7 +3427,7 @@ and !empty($isi) and strpos($text,"'") === false){
             'message' => "~is_not_null",
             'case_sensitive' => 1,
             'whole_word'=>2,
-        ],1,[
+        ],[
             'command', 'message', 'reply_mode'
         ],"first_sensitive");
     }

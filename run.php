@@ -5,6 +5,7 @@ include_once("helpers/hlp_data.php");
 include_once("helpers/hlp_sdata.php");
 include_once("helpers/hlp_bot.php");
 include_once("helpers/hlp_botmarkup.php");
+include_once("emoji.php");
 $bot_config = getConfig('bot', []);
 foreach($bot_config as $bot=>$config){
     $token = $config['token'];
