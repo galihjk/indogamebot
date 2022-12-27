@@ -2,6 +2,9 @@
 
 if(!function_exists('str_contains')){
     function str_contains($haystack, $needle){
+		if((string)$needle === ""){
+			return false;
+		}
         return (strpos($haystack, $needle) !== false);
     }
 }
