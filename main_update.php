@@ -3371,7 +3371,7 @@ and !empty($isi) and strpos($text,"'") === false){
         'message' => "~is_not_null",
         'case_sensitive' => 0,
         'whole_word'=>1,
-    ],1,[
+    ],[
         'command', 'message', 'reply_mode'
     ],"insensitive");
     if(!$sdata){
