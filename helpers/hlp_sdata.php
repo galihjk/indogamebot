@@ -107,7 +107,7 @@ function sdata_update_filtered($table, $filter, $sdata_update, $limit){
     return $result;
 }
 
-function sdata_find($table, $filter, $limit, $return_fields = [], $type = "exact"){
+function sdata_find($table, $filter, $limit, $return_fields = []){
     if(!file_exists("sdata/$table/$find_field")){
         return [];
     }
@@ -118,7 +118,7 @@ function sdata_find($table, $filter, $limit, $return_fields = [], $type = "exact
             $return_fields[] = $item;
         }
     }
-    $ids = sdata_get_filtered_ids($table, $filter, $limit, $type);
+    $ids = sdata_get_filtered_ids($table, $filter, $limit);
     $sdata_got = [];
     foreach($ids as $id){
         $sdata_got[$id] = sdata_get_one($table, $id, $return_fields);
@@ -126,16 +126,16 @@ function sdata_find($table, $filter, $limit, $return_fields = [], $type = "exact
     return $sdata_got;
 }
 
-function sdata_get_filtered_ids($table, $filter, $limit, $type){
+function sdata_get_filtered_ids($table, $filter, $limit){
     $ids = [];
     $filtercheck = $filter;
     $currentcount = 0;
     $current_id_check = 0;
-    sdata_filtercheck($table, $ids, $filtercheck, $current_id_check, $currentcount, $limit, $type);
+    sdata_filtercheck($table, $ids, $filtercheck, $current_id_check, $currentcount, $limit);
     return $ids;
 }
 
-function sdata_filtercheck($table, &$ids, &$filtercheck, &$current_id_check, &$currentcount, $limit, $type){
+function sdata_filtercheck($table, &$ids, &$filtercheck, &$current_id_check, &$currentcount, $limit){
     // echo "<pre>";
     // print_r($ids);
     // print_r($filtercheck);
@@ -149,8 +149,15 @@ function sdata_filtercheck($table, &$ids, &$filtercheck, &$current_id_check, &$c
                 header("HTTP/1.1 500 Internal Server Error");
                 die("ERROR filter check mengandung 'id'.".print_r($filtercheck,true));
             }
+            $type = "exact";
             $find_field = $k;
-            $find_val = $v;
+            if(is_array($v)){
+                $find_val = $v[0];
+                $type = $v[1];
+            }
+            else{
+                $find_val = $v;
+            }
             break;
         }
         // echo "<p>find_field$find_field find_val$find_val</p>";
@@ -162,7 +169,7 @@ function sdata_filtercheck($table, &$ids, &$filtercheck, &$current_id_check, &$c
                 $currentval = file_get_contents("sdata/$table/$find_field/$current_id_check");
                 // echo "<p>currentval$currentval</p>";
                 if(str_compare($currentval, $find_val, $type)){
-                    return sdata_filtercheck($table, $ids, $filtercheck, $current_id_check, $currentcount, $limit, $type);
+                    return sdata_filtercheck($table, $ids, $filtercheck, $current_id_check, $currentcount, $limit);
                     // $ids[] = $item;
                 }
                 else{
@@ -177,7 +184,7 @@ function sdata_filtercheck($table, &$ids, &$filtercheck, &$current_id_check, &$c
                     // echo "<p>currentval$currentval</p>";
                     $id_get = "";
                     if(str_compare($currentval, $find_val, $type)){
-                        $id_get = sdata_filtercheck($table, $ids, $filtercheck, $item, $currentcount, $limit, $type);
+                        $id_get = sdata_filtercheck($table, $ids, $filtercheck, $item, $currentcount, $limit);
                         // $ids[] = $item;
                     }
                     // echo "<p>id_get$id_get</p>";
@@ -200,8 +207,8 @@ function sdata_filtercheck($table, &$ids, &$filtercheck, &$current_id_check, &$c
     }
 }
 
-function sdata_find_one($table, $filter, $return_fields = [], $type = "exact"){
-    $data = sdata_find($table, $filter, 1, $return_fields, $type);
+function sdata_find_one($table, $filter, $return_fields = []){
+    $data = sdata_find($table, $filter, 1, $return_fields);
     $sdata_got = [];
     if(!empty($data)){
         foreach($data as $item){
@@ -240,8 +247,8 @@ function sdata_delete($table, $id){
     return true;
 }
 
-function sdata_delete_filtered($table, $filter, $limit, $type = "exact"){
-    $ids = sdata_get_filtered_ids($table, $filter, $limit, $type);
+function sdata_delete_filtered($table, $filter, $limit){
+    $ids = sdata_get_filtered_ids($table, $filter, $limit);
     $result = [];
     foreach($ids as $id){
         $result[] = sdata_delete($table, $id);

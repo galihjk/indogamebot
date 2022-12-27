@@ -1187,10 +1187,10 @@ elseif($chatid == $admingroup and substr($isi,0,strlen("/users")) == "/users"){
     // $st->execute();
     // while($row = $st->fetch(PDO::FETCH_ASSOC)){
     $sdata = sdata_find($db_alias."_USERS",[
-        'name'=>$wherecommand,
+        'name'=>[$wherecommand,"contains_insensitive"],
     ],100,[
         'user_name', 'user_id', 'name',
-    ],"contains_insensitive");
+    ]);
     foreach($sdata as $row){        
         $output .= "/id_".$row['user_id']." ".substr($row['name'],0,6);
         if(strlen($row['name'])>6){
@@ -1201,10 +1201,10 @@ elseif($chatid == $admingroup and substr($isi,0,strlen("/users")) == "/users"){
         }
     }
     $sdata = sdata_find($db_alias."_USERS",[
-        'user_name'=>$wherecommand,
+        'user_name'=>[$wherecommand,"contains_insensitive"],
     ],100,[
         'user_name', 'user_id', 'name',
-    ],"contains_insensitive");
+    ]);
     foreach($sdata as $row){        
         $output .= "/id_".$row['user_id']." ".substr($row['name'],0,6);
         if(strlen($row['name'])>6){
@@ -1503,10 +1503,10 @@ and strpos($isi,"msgcmd_") === false ){
     // $st->execute();
     if($wherecommand){
         $sdata = sdata_find($db_alias."_MSG_CMD", [
-            'command'=>$wherecommand,
+            'command'=>[$wherecommand, "contains_insensitive"],
         ], 200, [
             'id', 'command', 'active',
-        ], "contains_insensitive");
+        ]);
     
         $output = "";
         foreach($sdata as $val){
@@ -1691,9 +1691,10 @@ elseif(($chatid == $admingroup or $dari == $developer) and substr($isi,0,13) == 
     $sdata = sdata_get_one($db_alias."_MSG_CMD",$idnya,[
         'command', 'case_sensitive', 'whole_word', 'message', 'reply_mode', 'active'
     ]);
-    $output = "";
+    $output = "[EDIT]\n";
     // while($row = $st->fetch(PDO::FETCH_ASSOC)){
     foreach([$sdata] as $row){
+        if((string)$row['command'] === "") continue;
         $output .= "Command: <b>" . $row['command'] . "</b>\n /msgcmd_EditCmd_$idnya \n\n";
         if($row['active'] == '1'){
             $output .= "Active: <b>ON</b>\n /msgcmd_Active_off_$idnya \n\n";
@@ -3405,68 +3406,68 @@ and !empty($isi) and strpos($text,"'") === false){
     // order by random() limit 1");
     // $st->execute();
     $sdata = sdata_find_one($db_alias."_MSG_CMD",[
-        'command'=>str_ireplace("@$botname","",$text),
+        'command'=>[str_ireplace("@$botname","",$text),"insensitive"],
         'active' => 1,
-        'message' => "~is_not_null",
         'case_sensitive' => 0,
         'whole_word'=>1,
+        'message' => "~is_not_null",
     ],[
         'command', 'message', 'reply_mode'
-    ],"insensitive");
+    ]);
     if(!$sdata){
         $sdata = sdata_find_one($db_alias."_MSG_CMD",[
-            'command'=>str_ireplace("@$botname","",$text),
+            'command'=>[str_ireplace("@$botname","",$text),"contains_insensitive"],
             'active' => 1,
-            'message' => "~is_not_null",
             'case_sensitive' => 0,
             'whole_word'=>0,
+            'message' => "~is_not_null",
         ],[
             'command', 'message', 'reply_mode'
-        ],"contains_insensitive");
+        ]);
     }
     if(!$sdata){
         $sdata = sdata_find_one($db_alias."_MSG_CMD",[
-            'command'=>str_ireplace("@$botname","",$text),
+            'command'=>[str_ireplace("@$botname","",$text),"first_insensitive"],
             'active' => 1,
-            'message' => "~is_not_null",
             'case_sensitive' => 0,
             'whole_word'=>2,
+            'message' => "~is_not_null",
         ],[
             'command', 'message', 'reply_mode'
-        ],"first_insensitive");
+        ]);
     }
     if(!$sdata){
         $sdata = sdata_find_one($db_alias."_MSG_CMD",[
-            'command'=>str_ireplace("@$botname","",$text),
+            'command'=>[str_ireplace("@$botname","",$text),"exact"],
             'active' => 1,
-            'message' => "~is_not_null",
             'case_sensitive' => 1,
             'whole_word'=>1,
+            'message' => "~is_not_null",
         ],[
             'command', 'message', 'reply_mode'
-        ],"exact");
+        ]);
     }
     if(!$sdata){
         $sdata = sdata_find_one($db_alias."_MSG_CMD",[
-            'command'=>str_ireplace("@$botname","",$text),
+            'command'=>[str_ireplace("@$botname","",$text),"contains_sensitive"],
             'active' => 1,
             'message' => "~is_not_null",
             'case_sensitive' => 1,
             'whole_word'=>0,
         ],[
             'command', 'message', 'reply_mode'
-        ],"contains_sensitive");
+        ]);
     }
     if(!$sdata){
         $sdata = sdata_find_one($db_alias."_MSG_CMD",[
-            'command'=>str_ireplace("@$botname","",$text),
+            'command'=>[str_ireplace("@$botname","",$text),"first_sensitive"],
             'active' => 1,
             'message' => "~is_not_null",
             'case_sensitive' => 1,
             'whole_word'=>2,
         ],[
             'command', 'message', 'reply_mode'
-        ],"first_sensitive");
+        ]);
     }
 
     $output = "";
