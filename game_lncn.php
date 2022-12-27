@@ -18,7 +18,7 @@ if($game['started'] == 1){
             'disable_web_page_preview'=>true,
             'reply_markup' => makebutton($button)
             );
-        $hasil = KirimPerintah($token,'sendMessage',$data);
+        $hasil = KirimPerintahX($token,'sendMessage',$data);
 
         $output = "";
         foreach($game['players'] as $playerid=>$player){
@@ -36,7 +36,7 @@ if($game['started'] == 1){
             'disable_web_page_preview'=>true,
             'reply_markup' => makebutton($button)
             );
-        $hasil = KirimPerintah($token,'sendMessage',$data);
+        $hasil = KirimPerintahX($token,'sendMessage',$data);
         $gamedata['lncn'][$chatid]['step'] = "sedangsetor";
         $gamedata['lncn'][$chatid]['steptime'] = 0;
     }
@@ -72,7 +72,7 @@ if($game['started'] == 1){
                 'parse_mode'=>'HTML',
                 'disable_web_page_preview'=>true
                 );
-            $hasil = KirimPerintah($token,'sendMessage',$data);
+            $hasil = KirimPerintahX($token,'sendMessage',$data);
             $gamedata['lncn'][$chatid]['step'] = "setor";
             $gamedata['lncn'][$chatid]['steptime'] = 0;
         }
@@ -113,7 +113,7 @@ if($game['started'] == 1){
                 'parse_mode'=>'HTML',
                 'disable_web_page_preview'=>true
                 );
-            $hasil = KirimPerintah($token,'sendMessage',$data);
+            $hasil = KirimPerintahX($token,'sendMessage',$data);
             $gamedata['lncn'][$chatid]['step'] = "pilihnumber";
             $gamedata['lncn'][$chatid]['steptime'] = 0;
         }
@@ -136,7 +136,7 @@ if($game['started'] == 1){
             'disable_web_page_preview'=>true,
             'reply_markup' => makebutton($button)
             );
-        $hasil = KirimPerintah($token,'sendMessage',$data);
+        $hasil = KirimPerintahX($token,'sendMessage',$data);
         
         $gamedata['lncn'][$chatid]['step'] = "sedangpilihnumber";
         $gamedata['lncn'][$chatid]['steptime'] = 0;
@@ -184,7 +184,7 @@ if($game['started'] == 1){
                 'parse_mode'=>'HTML',
                 'reply_markup' => $forcereply
                 );
-            $hasil = KirimPerintah($token,'sendMessage',$data);
+            $hasil = KirimPerintahX($token,'sendMessage',$data);
             $gamedata['lncn'][$chatid]['step'] = "maukasihdare";
             $gamedata['lncn'][$chatid]['steptime'] = 0;
         }
@@ -240,7 +240,7 @@ if($game['started'] == 1){
             'parse_mode'=>'HTML',
             // 'reply_markup' => $forcereply
             );
-        $hasil = KirimPerintah($token,'sendMessage',$data);
+        $hasil = KirimPerintahX($token,'sendMessage',$data);
         $gamedata['lncn'][$chatid]['step'] = "sedangkasihdare";
         $gamedata['lncn'][$chatid]['steptime'] = 0;
     }
@@ -251,7 +251,7 @@ if($game['started'] == 1){
             'parse_mode'=>'HTML',
             'disable_web_page_preview'=>true
             );
-        $hasil = KirimPerintah($token,'sendMessage',$data);
+        $hasil = KirimPerintahX($token,'sendMessage',$data);
         $gamedata['lncn'][$chatid]['step'] = "selesai";
         $gamedata['lncn'][$chatid]['steptime'] = 0;
         $gamedata['lncn'][$chatid]['started'] = 0;
