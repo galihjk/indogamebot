@@ -25,8 +25,8 @@ if(!empty($srvstatus['run_code'])){
         $restartbot	= false;
         include("run.php");
 
-        // get_without_wait($serverurl);
-        echo "<a href='$serverurl'>$serverurl</a>";
+        get_without_wait($serverurl);
+        // echo "<a href='$serverurl'>$serverurl</a>";
     }
     else{
         //run code has been changed
