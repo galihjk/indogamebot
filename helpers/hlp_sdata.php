@@ -197,9 +197,9 @@ function sdata_filtercheck($table, &$ids, &$filtercheck, &$current_id_check, &$c
                             return false;
                         }
                     }
-                    else{
-                        if($table != "IDG_SETTINGS") file_put_contents("msgcmdlog/XXX".date("YmdHi").rand(0,999).".txt",print_r([$currentval, $find_val, $type],true));
-                    }
+                    // else{
+                    //     if($table != "IDG_SETTINGS") file_put_contents("msgcmdlog/XXX".date("YmdHi").rand(0,999).".txt",print_r([$currentval, $find_val, $type],true));
+                    // }
                 }
             }
         }
