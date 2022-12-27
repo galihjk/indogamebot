@@ -54,7 +54,7 @@ function sdata_get_one($table, $id, $fields = [], $refresh = false){
         }
         else{
             foreach($fields as $field){
-                $sdata_got[$field] = $sdata_global[$table][$id][$field];
+                if($field!='id') $sdata_got[$field] = $sdata_global[$table][$id][$field];
             }
             return $sdata_got;
         }
