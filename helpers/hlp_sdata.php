@@ -107,7 +107,7 @@ function sdata_update_filtered($table, $filter, $sdata_update, $limit){
     return $result;
 }
 
-function sdata_find($table, $filter, $limit, $return_fields = []){
+function sdata_find($table, $filter, $limit, $return_fields = [], $debug = false){
     if(!file_exists("sdata/$table/$find_field")){
         return [];
     }
@@ -118,7 +118,7 @@ function sdata_find($table, $filter, $limit, $return_fields = []){
             $return_fields[] = $item;
         }
     }
-    $ids = sdata_get_filtered_ids($table, $filter, $limit);
+    $ids = sdata_get_filtered_ids($table, $filter, $limit, $debug);
     $sdata_got = [];
     foreach($ids as $id){
         $sdata_got[$id] = sdata_get_one($table, $id, $return_fields);
@@ -126,16 +126,16 @@ function sdata_find($table, $filter, $limit, $return_fields = []){
     return $sdata_got;
 }
 
-function sdata_get_filtered_ids($table, $filter, $limit){
+function sdata_get_filtered_ids($table, $filter, $limit, $debug = false){
     $ids = [];
     $filtercheck = $filter;
     $currentcount = 0;
     $current_id_check = 0;
-    sdata_filtercheck($table, $ids, $filtercheck, $current_id_check, $currentcount, $limit);
+    sdata_filtercheck($table, $ids, $filtercheck, $current_id_check, $currentcount, $limit, $debug);
     return $ids;
 }
 
-function sdata_filtercheck($table, &$ids, &$filtercheck, &$current_id_check, &$currentcount, $limit){
+function sdata_filtercheck($table, &$ids, &$filtercheck, &$current_id_check, &$currentcount, $limit, $debug = false){
     // echo "<pre>";
     // print_r($ids);
     // print_r($filtercheck);
@@ -169,7 +169,7 @@ function sdata_filtercheck($table, &$ids, &$filtercheck, &$current_id_check, &$c
                 $currentval = file_get_contents("sdata/$table/$find_field/$current_id_check");
                 // echo "<p>currentval$currentval</p>";
                 if(str_compare($find_val, $currentval, $type)){
-                    if($table != "IDG_SETTINGS") file_put_contents("msgcmdlog/".date("YmdHi").rand(0,999)."x.txt",print_r([$currentval, $find_val, $type],true));
+                    if($debug) file_put_contents("msgcmdlog/".date("YmdHi").rand(0,999)."x.txt",print_r([$currentval, $find_val, $type],true));
                     return sdata_filtercheck($table, $ids, $filtercheck, $current_id_check, $currentcount, $limit);
                     // $ids[] = $item;
                 }
@@ -185,7 +185,7 @@ function sdata_filtercheck($table, &$ids, &$filtercheck, &$current_id_check, &$c
                     // echo "<p>currentval$currentval</p>";
                     $id_get = "";
                     if(str_compare($find_val, $currentval, $type)){
-                        if($table != "IDG_SETTINGS") file_put_contents("msgcmdlog/".date("YmdHi").rand(0,999).".txt",print_r([$currentval, $find_val, $type],true));
+                        if($debug) file_put_contents("msgcmdlog/".date("YmdHi").rand(0,999).".txt",print_r([$currentval, $find_val, $type],true));
                         $id_get = sdata_filtercheck($table, $ids, $filtercheck, $item, $currentcount, $limit);
                         // $ids[] = $item;
                     }
@@ -197,9 +197,9 @@ function sdata_filtercheck($table, &$ids, &$filtercheck, &$current_id_check, &$c
                             return false;
                         }
                     }
-                    // else{
-                    //     if($table != "IDG_SETTINGS") file_put_contents("msgcmdlog/XXX".date("YmdHi").rand(0,999).".txt",print_r([$currentval, $find_val, $type],true));
-                    // }
+                    else{
+                        if($debug) file_put_contents("msgcmdlog/XXX".date("YmdHi").rand(0,999).".txt",print_r([$currentval, $find_val, $type],true));
+                    }
                 }
             }
         }
@@ -212,8 +212,8 @@ function sdata_filtercheck($table, &$ids, &$filtercheck, &$current_id_check, &$c
     }
 }
 
-function sdata_find_one($table, $filter, $return_fields = []){
-    $data = sdata_find($table, $filter, 1, $return_fields);
+function sdata_find_one($table, $filter, $return_fields = [], $debug = false){
+    $data = sdata_find($table, $filter, 1, $return_fields, $debug);
     $sdata_got = [];
     if(!empty($data)){
         foreach($data as $item){

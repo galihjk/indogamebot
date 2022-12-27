@@ -3405,6 +3405,12 @@ and !empty($isi) and strpos($text,"'") === false){
     // )
     // order by random() limit 1");
     // $st->execute();
+    if(str_compare("/tesgj",$text,"insensitive")){
+        $debug = true;
+    }
+    else{
+        $debug = false;
+    }
     $sdata = sdata_find_one($db_alias."_MSG_CMD",[
         'command'=>[str_ireplace("@$botname","",$text),"insensitive"],
         'active' => 1,
