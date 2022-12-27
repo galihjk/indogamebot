@@ -3367,6 +3367,7 @@ and !empty($isi) and strpos($text,"'") === false){
     // order by random() limit 1");
     // $st->execute();
     $sdata = sdata_find_one($db_alias."_MSG_CMD",[
+        'command'=>str_ireplace("@$botname","",$text),
         'active' => 1,
         'message' => "~is_not_null",
         'case_sensitive' => 0,
@@ -3376,6 +3377,7 @@ and !empty($isi) and strpos($text,"'") === false){
     ],"insensitive");
     if(!$sdata){
         $sdata = sdata_find_one($db_alias."_MSG_CMD",[
+            'command'=>str_ireplace("@$botname","",$text),
             'active' => 1,
             'message' => "~is_not_null",
             'case_sensitive' => 0,
@@ -3386,6 +3388,7 @@ and !empty($isi) and strpos($text,"'") === false){
     }
     if(!$sdata){
         $sdata = sdata_find_one($db_alias."_MSG_CMD",[
+            'command'=>str_ireplace("@$botname","",$text),
             'active' => 1,
             'message' => "~is_not_null",
             'case_sensitive' => 0,
@@ -3396,6 +3399,7 @@ and !empty($isi) and strpos($text,"'") === false){
     }
     if(!$sdata){
         $sdata = sdata_find_one($db_alias."_MSG_CMD",[
+            'command'=>str_ireplace("@$botname","",$text),
             'active' => 1,
             'message' => "~is_not_null",
             'case_sensitive' => 1,
@@ -3406,6 +3410,7 @@ and !empty($isi) and strpos($text,"'") === false){
     }
     if(!$sdata){
         $sdata = sdata_find_one($db_alias."_MSG_CMD",[
+            'command'=>str_ireplace("@$botname","",$text),
             'active' => 1,
             'message' => "~is_not_null",
             'case_sensitive' => 1,
@@ -3416,6 +3421,7 @@ and !empty($isi) and strpos($text,"'") === false){
     }
     if(!$sdata){
         $sdata = sdata_find_one($db_alias."_MSG_CMD",[
+            'command'=>str_ireplace("@$botname","",$text),
             'active' => 1,
             'message' => "~is_not_null",
             'case_sensitive' => 1,
