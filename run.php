@@ -59,6 +59,7 @@ foreach($bot_config as $bot=>$config){
     $activeusers = loadData("activeusers_$bot",[]);
     $blocked = loadData("blocked_$bot",[]);
     $update_id = loadData("updid_$bot",0);
+    $admin_mentions = loadData("admin_mentions_$bot",0);
 
     //untuk setiap pesan yang masuk:=========================================================
     $updates = DapatkanUpdate($update_id, $token);
@@ -128,5 +129,6 @@ foreach($bot_config as $bot=>$config){
     saveData("activeusers_$bot",$activeusers);
     saveData("blocked_$bot",$blocked);
     saveData("updid_$bot",$update_id);
+    saveData("admin_mentions_$bot",$admin_mentions);
 }
 

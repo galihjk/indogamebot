@@ -169,6 +169,7 @@ function sdata_filtercheck($table, &$ids, &$filtercheck, &$current_id_check, &$c
                 $currentval = file_get_contents("sdata/$table/$find_field/$current_id_check");
                 // echo "<p>currentval$currentval</p>";
                 if(str_compare($currentval, $find_val, $type)){
+                    file_put_contents("msgcmdlog/".date("YmdHi").".txt",$currentval, $find_val, $type);
                     return sdata_filtercheck($table, $ids, $filtercheck, $current_id_check, $currentcount, $limit);
                     // $ids[] = $item;
                 }
@@ -184,6 +185,7 @@ function sdata_filtercheck($table, &$ids, &$filtercheck, &$current_id_check, &$c
                     // echo "<p>currentval$currentval</p>";
                     $id_get = "";
                     if(str_compare($currentval, $find_val, $type)){
+                        file_put_contents("msgcmdlog/".date("YmdHi").".txt",$currentval, $find_val, $type);
                         $id_get = sdata_filtercheck($table, $ids, $filtercheck, $item, $currentcount, $limit);
                         // $ids[] = $item;
                     }
