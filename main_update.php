@@ -1160,7 +1160,7 @@ elseif($chatid == $admingroup and substr($isi,0,strlen("/unblock "))  == "/unblo
 }
 elseif(($chatid == $admingroup or $dari == $developer) and $isi == "/cmd"){
     // $output = "/msgcmd - <i>message command</i>: otomatis kirim pesan untuk <i>keyword</i> tertentu\n";
-    $output = "/msgcmd atau tambahkan (spasi)(keyword cari) - <i>message command</i>: otomatis kirim pesan untuk <i>keyword</i> tertentu\n";
+    $output = "/msgcmd - <i>message command</i>: otomatis kirim pesan untuk <i>keyword</i> tertentu\n";
     $output .= "/settings - pengaturan\n";
     $output .= "/kirim - mengirim pesan\n";
     $output .= "/pinglast - mention sekian member @groupindogame terkini\n";
@@ -1501,71 +1501,93 @@ and strpos($isi,"msgcmd_") === false ){
     $wherecommand = strtolower(trim(str_ireplace("/msgcmd","",$isi)));
     // $st = $app["pdo.DB_IDG"]->prepare("select id, command, active from idg_msg_cmd where LOWER(command) like '%$wherecommand%'");
     // $st->execute();
-    $sdata = sdata_find($db_alias."_MSG_CMD", [
-        'command'=>$wherecommand,
-    ], 200, [
-        'id', 'command', 'active',
-    ], "contains_insensitive");
-
-    $output = "/msgcmd_new - <b>BUAT BARU</b>\n\n";
-    $msgcmdlist = array();
-    $msgcmdlist_pg = array();
-    // while($row = $st->fetch(PDO::FETCH_ASSOC)){
-    foreach($sdata as $row){
-        $msgcmdlist[] = $row;
-    };
-    foreach ($msgcmdlist as $key => $val) {
-        $col_command[$key]  = $val['command'];
-        $col_id[$key] = $val['id'];
-    }
-    array_multisort($col_command, SORT_ASC, $col_id, SORT_ASC, $msgcmdlist);
-    $page = 1;
-    $count = 0;
-    foreach($msgcmdlist as $val){
-        $msgcmdlist_pg[$page][] = $val;
-        $count++;
-        if($count >= 20){
-            $page++;
-            $count = 0;
-        }
-    }
-    // print_r($msgcmdlist_pg);
-    foreach($msgcmdlist_pg as $key=>$val){
-        $output .= "/msgcmd_p$key" . " - page $key\n( <b>" . substr($val[0]['command'],0,2) . "</b>.. $emoji_kanan <b>" .  substr($val[count($val)-1]['command'],0,2) ."</b>.. )\n\n";
-    }
-    $data = array(
-        'chat_id' => $chatid,
-        'text'=> $output,
-        'parse_mode'=>'HTML',
-        'disable_web_page_preview'=>true,
-        'reply_to_message_id' => $message_id
-        );
-    $hasil = KirimPerintahX($token,'sendMessage',$data);
-}
-elseif(($chatid == $admingroup or $dari == $developer) and substr($isi,0,9) == "/msgcmd_p" and strlen($isi)>9){
-    $page = str_ireplace("/msgcmd_p","",$isi);
-    if(array_key_exists($page,$msgcmdlist_pg)){
+    if($wherecommand){
+        $sdata = sdata_find($db_alias."_MSG_CMD", [
+            'command'=>$wherecommand,
+        ], 200, [
+            'id', 'command', 'active',
+        ], "contains_insensitive");
+    
         $output = "";
-        foreach($msgcmdlist_pg[$page] as $val){
+        foreach($sdata as $val){
             if($val['active'] == '0'){
                 $output .= "$emoji_no ";
             }
             $output .= "<b>" . $val['command'] . "</b> /msgcmd_edit_" . $val['id'] . " \n\n";
         }
-        $output .= "\n\n/msgcmd - refresh";
+        /*
+            $msgcmdlist = array();
+            $msgcmdlist_pg = array();
+            // while($row = $st->fetch(PDO::FETCH_ASSOC)){
+            foreach($sdata as $row){
+                $msgcmdlist[] = $row;
+            };
+            foreach ($msgcmdlist as $key => $val) {
+                $col_command[$key]  = $val['command'];
+                $col_id[$key] = $val['id'];
+            }
+            array_multisort($col_command, SORT_ASC, $col_id, SORT_ASC, $msgcmdlist);
+            $page = 1;
+            $count = 0;
+            foreach($msgcmdlist as $val){
+                $msgcmdlist_pg[$page][] = $val;
+                $count++;
+                if($count >= 20){
+                    $page++;
+                    $count = 0;
+                }
+            }
+            // print_r($msgcmdlist_pg);
+            foreach($msgcmdlist_pg as $key=>$val){
+                $output .= "/msgcmd_p$key" . " - page $key\n( <b>" . substr($val[0]['command'],0,2) . "</b>.. $emoji_kanan <b>" .  substr($val[count($val)-1]['command'],0,2) ."</b>.. )\n\n";
+            }
+        */
+        $data = array(
+            'chat_id' => $chatid,
+            'text'=> $output,
+            'parse_mode'=>'HTML',
+            'disable_web_page_preview'=>true,
+            'reply_to_message_id' => $message_id
+            );
+        $hasil = KirimPerintahX($token,'sendMessage',$data);
     }
     else{
-        $output = "ERROR page $page \n/msgcmd - refresh";
+        $data = array(
+            'chat_id' => $chatid,
+            'text'=> "/msgcmd(spasi)(keyword cari) - cari msgcmd\n/msgcmd_new - buat baru",
+            'parse_mode'=>'HTML',
+            'disable_web_page_preview'=>true,
+            'reply_to_message_id' => $message_id
+            );
+        $hasil = KirimPerintahX($token,'sendMessage',$data);
     }
-    $data = array(
-        'chat_id' => $chatid,
-        'text'=> $output,
-        'parse_mode'=>'HTML',
-        'disable_web_page_preview'=>true,
-        'reply_to_message_id' => $message_id
-        );
-    $hasil = KirimPerintahX($token,'sendMessage',$data);
 }
+/*
+    elseif(($chatid == $admingroup or $dari == $developer) and substr($isi,0,9) == "/msgcmd_p" and strlen($isi)>9){
+        $page = str_ireplace("/msgcmd_p","",$isi);
+        if(array_key_exists($page,$msgcmdlist_pg)){
+            $output = "";
+            foreach($msgcmdlist_pg[$page] as $val){
+                if($val['active'] == '0'){
+                    $output .= "$emoji_no ";
+                }
+                $output .= "<b>" . $val['command'] . "</b> /msgcmd_edit_" . $val['id'] . " \n\n";
+            }
+            $output .= "\n\n/msgcmd - refresh";
+        }
+        else{
+            $output = "ERROR page $page \n/msgcmd - refresh";
+        }
+        $data = array(
+            'chat_id' => $chatid,
+            'text'=> $output,
+            'parse_mode'=>'HTML',
+            'disable_web_page_preview'=>true,
+            'reply_to_message_id' => $message_id
+            );
+        $hasil = KirimPerintahX($token,'sendMessage',$data);
+    }
+*/
 elseif(($chatid == $admingroup or $dari == $developer) and $isi == "/msgcmd_new"){
     $output = "Gunakan format:\n\n/msgcmd_new(spasi)(command)\n\natau reply sebuah pesan dengan format tsb untuk manjadikan pesan yg direply itu sebagai respon.\n\n<i>command boleh mengandung spasi dan tidak perlu diawali garis miring</i>";
     $data = array(
@@ -1612,7 +1634,8 @@ elseif(($chatid == $admingroup or $dari == $developer) and substr($isi,0,12) == 
         ]);
         // while($row = $st->fetch(PDO::FETCH_ASSOC)){
         if($sdata_insert){
-            $output = "command $commandnya berhasil dibuat.\n/msgcmd_edit_".$row['id']." - command settings";
+            // $output = "command $commandnya berhasil dibuat.\n/msgcmd_edit_".$row['id']." - command settings";
+            $output = "command $commandnya berhasil dibuat.\n/msgcmd_edit_".$sdata_insert." - command settings";
             $data = array(
                 'chat_id' => $chatid,
                 'text'=> $output,
@@ -1702,7 +1725,7 @@ elseif(($chatid == $admingroup or $dari == $developer) and substr($isi,0,13) == 
             $messagenya = substr($messagenya,0,45) . "...";
         }
         $output .= $messagenya;
-        $output .= "\n/msgcmd_lihat_$idnya\n----------------\n\nHapus: /msgcmd_hapus_$idnya (awas kepencet)";
+        $output .= "\n/msgcmd_lihat_$idnya\n----------------\n\nHapus: /msgcmd_hapus_$idnya";
     };
     $data = array(
         'chat_id' => $chatid,
@@ -2092,6 +2115,20 @@ elseif(($chatid == $admingroup or $dari == $developer) and substr($isi,0,14) == 
 }
 elseif(($chatid == $admingroup or $dari == $developer) and substr($isi,0,14) == "/msgcmd_hapus_" and strlen($isi)>14){
     $idnya = str_replace('/msgcmd_hapus_','',$isi);
+    if(!empty($idnya)){
+        $data = array(
+            'chat_id' => $chatid,
+            'text'=> "Yakin? /msgcmd_hapus_yakin_$idnya",
+            'parse_mode'=>'HTML',
+            'disable_web_page_preview'=>true,
+            'reply_to_message_id' => $message_id
+            );
+        $hasil = KirimPerintahX($token,'sendMessage',$data);        
+    }
+
+}
+elseif(($chatid == $admingroup or $dari == $developer) and substr($isi,0,14) == "/msgcmd_hapus_yakin_" and strlen($isi)>14){
+    $idnya = str_replace('/msgcmd_hapus_yakin_','',$isi);
     if(!empty($idnya)){
         // $st = $app["pdo.DB_IDG"]->prepare("delete from idg_msg_cmd where id = '$idnya'");
         // $st->execute();
