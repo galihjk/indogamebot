@@ -1688,12 +1688,12 @@ elseif(($chatid == $admingroup or $dari == $developer) and substr($isi,0,13) == 
     $idnya = str_ireplace('/msgcmd_edit_','',$isi);
     // $st = $app["pdo.DB_IDG"]->prepare("select command, case_sensitive, whole_word, message, reply_mode, active from idg_msg_cmd where id='$idnya'");
     // $st->execute();
-    $sdata = sdata_find($db_alias."_MSG_CMD",['id'=>$idnya],1,[
+    $sdata = sdata_get_one($db_alias."_MSG_CMD",$idnya,[
         'command', 'case_sensitive', 'whole_word', 'message', 'reply_mode', 'active'
     ]);
     $output = "";
     // while($row = $st->fetch(PDO::FETCH_ASSOC)){
-    foreach($sdata as $row){
+    foreach([$sdata] as $row){
         $output .= "Command: <b>" . $row['command'] . "</b>\n /msgcmd_EditCmd_$idnya \n\n";
         if($row['active'] == '1'){
             $output .= "Active: <b>ON</b>\n /msgcmd_Active_off_$idnya \n\n";

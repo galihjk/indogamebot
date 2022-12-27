@@ -145,6 +145,10 @@ function sdata_filtercheck($table, &$ids, &$filtercheck, &$current_id_check, &$c
         $find_field = "";
         $find_val = "";
         foreach($filtercheck as $k=>$v){
+            if($k == 'id'){
+                header("HTTP/1.1 500 Internal Server Error");
+                die("ERROR filter check mengandung 'id'.".print_r($filtercheck,true));
+            }
             $find_field = $k;
             $find_val = $v;
             break;
