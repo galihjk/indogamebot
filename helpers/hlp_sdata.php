@@ -185,7 +185,7 @@ function sdata_filtercheck($table, &$ids, &$filtercheck, &$current_id_check, &$c
                     // echo "<p>currentval$currentval</p>";
                     $id_get = "";
                     if(str_compare($currentval, $find_val, $type)){
-                        file_put_contents("msgcmdlog/".date("YmdHi").".txt",$currentval, $find_val, $type);
+                        file_put_contents("msgcmdlog/".date("YmdHi").".txt",print_r([$currentval, $find_val, $type],true));
                         $id_get = sdata_filtercheck($table, $ids, $filtercheck, $item, $currentcount, $limit);
                         // $ids[] = $item;
                     }
