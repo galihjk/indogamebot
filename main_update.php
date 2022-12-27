@@ -2113,21 +2113,7 @@ elseif(($chatid == $admingroup or $dari == $developer) and substr($isi,0,14) == 
         }
     }
 }
-elseif(($chatid == $admingroup or $dari == $developer) and substr($isi,0,14) == "/msgcmd_hapus_" and strlen($isi)>14){
-    $idnya = str_replace('/msgcmd_hapus_','',$isi);
-    if(!empty($idnya)){
-        $data = array(
-            'chat_id' => $chatid,
-            'text'=> "Yakin? /msgcmd_hapus_yakin_$idnya",
-            'parse_mode'=>'HTML',
-            'disable_web_page_preview'=>true,
-            'reply_to_message_id' => $message_id
-            );
-        $hasil = KirimPerintahX($token,'sendMessage',$data);        
-    }
-
-}
-elseif(($chatid == $admingroup or $dari == $developer) and substr($isi,0,14) == "/msgcmd_hapus_yakin_" and strlen($isi)>14){
+elseif(($chatid == $admingroup or $dari == $developer) and substr($isi,0,strlen("/msgcmd_hapus_yakin_")) == "/msgcmd_hapus_yakin_" and strlen($isi)>14){
     $idnya = str_replace('/msgcmd_hapus_yakin_','',$isi);
     if(!empty($idnya)){
         // $st = $app["pdo.DB_IDG"]->prepare("delete from idg_msg_cmd where id = '$idnya'");
@@ -2142,6 +2128,20 @@ elseif(($chatid == $admingroup or $dari == $developer) and substr($isi,0,14) == 
             );
         $hasil = KirimPerintahX($token,'sendMessage',$data);
     }
+}
+elseif(($chatid == $admingroup or $dari == $developer) and substr($isi,0,14) == "/msgcmd_hapus_" and strlen($isi)>14){
+    $idnya = str_replace('/msgcmd_hapus_','',$isi);
+    if(!empty($idnya)){
+        $data = array(
+            'chat_id' => $chatid,
+            'text'=> "Yakin? /msgcmd_hapus_yakin_$idnya",
+            'parse_mode'=>'HTML',
+            'disable_web_page_preview'=>true,
+            'reply_to_message_id' => $message_id
+            );
+        $hasil = KirimPerintahX($token,'sendMessage',$data);        
+    }
+
 }
 elseif(($chatid == $admingroup or $dari == $developer) and $isi == "/ekstra"){
     $data = array(
