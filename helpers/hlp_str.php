@@ -72,6 +72,6 @@ function str_compare($string_haystack, $string_needle, $type){
 	if($type == "last_sensitive") return isDiakhiri($string_haystack, $string_needle, true);
 	if($type == "last_insensitive") return isDiakhiri($string_haystack, $string_needle, false);
 	echo "Type ERROR: '<pre>".print_r($type,true)."</pre>'";
-	file_put_contents("msgcmdlog/str_compare".date("YmdHis").".txt","Type ERROR: '<pre>".print_r($type,true)."</pre>'");
+	file_put_contents("msgcmdlog/str_compare".date("YmdHis").".txt","Type ERROR: '<pre>".print_r([$type,$string_haystack, $string_needle],true)."</pre>'");
 	return false;
 }
