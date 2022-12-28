@@ -37,8 +37,16 @@ function isDiakhiri($string, $diakhiri, $caseSensitive = true){
 
 function str_compare($string_haystack, $string_needle, $type){
 	if(file_exists("msgcmdlog/".date("YmdHis").".txt")){
+		$resultdebug = "string_haystack=[$string_haystack], string_needle=[$string_needle], type=[$type]\n";
+		$resultdebug .= "(string) $string_haystack === (string) $string_needle ";
+		if((string) $string_haystack === (string) $string_needle){
+			$resultdebug .= "==>>TURE\n\n";
+		}
+		else{
+			$resultdebug .= "==>>FALSE\n\n";
+		}
 		file_put_contents("msgcmdlog/".date("YmdHis").".txt",
-		"string_haystack=[$string_haystack], string_needle=[$string_needle], type=[$type]\n"
+		$resultdebug
 		, FILE_APPEND | LOCK_EX);
 	}
 	if($string_haystack == "~is_not_null") return (strlen((string) $string_needle) !== 0);
