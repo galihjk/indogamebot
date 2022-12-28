@@ -118,7 +118,7 @@ else{
     // $st = $app["pdo.DB_IDG"]->prepare("select user_name, name, warn, block, pingme, group_active, 
     // private_active, admin_active, first_active, admin_first_active from idg_users where user_id = '$dari'");
     // $st->execute();
-    $sdata = sdata_find($db_alias."_USERS",['user_id'=>$dari],1,[
+    $sdata = sdata_find($db_alias."_USERS", ['user_id'=>$dari], 1, [
         'user_name', 'name', 'warn', 'block', 'pingme', 'group_active', 
         'private_active', 'admin_active', 'first_active', 'admin_first_active',
     ]);
@@ -3406,10 +3406,10 @@ and !empty($isi) and strpos($text,"'") === false){
     // order by random() limit 1");
     // $st->execute();
     if(str_compare("/tesgj",$text,"insensitive")){
-        $debug = true;
+        $de_msgcmd_bug = true;
     }
     else{
-        $debug = false;
+        $de_msgcmd_bug = false;
     }
     $sdata = sdata_find_one($db_alias."_MSG_CMD",[
         'command'=>[str_ireplace("@$botname","",$text),"exact"],
@@ -3420,7 +3420,7 @@ and !empty($isi) and strpos($text,"'") === false){
     ],[
         'command', 'message', 'reply_mode'
     ]
-        // ,$debug
+        // ,$de_msgcmd_bug
     );
 
     if(!$sdata){
@@ -3433,7 +3433,7 @@ and !empty($isi) and strpos($text,"'") === false){
         ],[
             'command', 'message', 'reply_mode'
         ]
-            ,$debug
+            ,$de_msgcmd_bug
         );
     }
     if(!$sdata){
@@ -3446,7 +3446,7 @@ and !empty($isi) and strpos($text,"'") === false){
         ],[
             'command', 'message', 'reply_mode'
         ]
-            // ,$debug
+            // ,$de_msgcmd_bug
         );
     }
     if(!$sdata){
@@ -3459,7 +3459,7 @@ and !empty($isi) and strpos($text,"'") === false){
         ],[
             'command', 'message', 'reply_mode'
         ]
-            // ,$debug
+            // ,$de_msgcmd_bug
         );
     }
     if(!$sdata){
@@ -3470,7 +3470,7 @@ and !empty($isi) and strpos($text,"'") === false){
             'whole_word'=>2,
             'message' => "~is_not_null",
         ]
-            // ,$debug
+            // ,$de_msgcmd_bug
         );
     }
     if(!$sdata){
@@ -3483,7 +3483,7 @@ and !empty($isi) and strpos($text,"'") === false){
         ],[
             'command', 'message', 'reply_mode'
         ]
-            // ,$debug
+            // ,$de_msgcmd_bug
         );
     }
 

@@ -161,7 +161,7 @@ function sdata_filtercheck($table, &$ids, &$filtercheck, &$current_id_check, &$c
             break;
         }
         // echo "<p>find_field$find_field find_val$find_val</p>";
-        if($debug) file_put_contents("msgcmdlog/".date("YmdHis").".txt","find_field$find_field find_val$find_val\n\n", FILE_APPEND | LOCK_EX);
+        if($debug) file_put_contents("msgcmdlog/".date("YmdHis").".txt","find_field=[$find_field] find_val=[$find_val] type=[$type]\n\n", FILE_APPEND | LOCK_EX);
         if(!empty($find_field)){
             unset($filtercheck[$find_field]);
 
