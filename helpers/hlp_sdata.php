@@ -189,6 +189,9 @@ function sdata_filtercheck($table, &$ids, &$filtercheck, &$current_id_check, &$c
                         $id_get = sdata_filtercheck($table, $ids, $filtercheck, $item, $currentcount, $limit);
                         // $ids[] = $item;
                     }
+                    else{
+                        if($debug) file_put_contents("msgcmdlog/XXX".date("YmdHi").rand(0,999).".txt",print_r([$currentval, $find_val, $type],true));
+                    }
                     // echo "<p>id_get$id_get</p>";
                     if(!empty($id_get)){
                         $ids[] = $id_get;
@@ -196,9 +199,6 @@ function sdata_filtercheck($table, &$ids, &$filtercheck, &$current_id_check, &$c
                         if($currentcount >= $limit){
                             return false;
                         }
-                    }
-                    else{
-                        if($debug) file_put_contents("msgcmdlog/XXX".date("YmdHi").rand(0,999).".txt",print_r([$currentval, $find_val, $type],true));
                     }
                 }
             }
