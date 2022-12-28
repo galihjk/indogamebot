@@ -161,6 +161,7 @@ function sdata_filtercheck($table, &$ids, &$filtercheck, &$current_id_check, &$c
             break;
         }
         // echo "<p>find_field$find_field find_val$find_val</p>";
+        if($debug) file_put_contents("msgcmdlog/".date("YmdHis").".txt","find_field$find_field find_val$find_val\n\n", FILE_APPEND | LOCK_EX);
         if(!empty($find_field)){
             unset($filtercheck[$find_field]);
 
@@ -169,12 +170,12 @@ function sdata_filtercheck($table, &$ids, &$filtercheck, &$current_id_check, &$c
                 $currentval = file_get_contents("sdata/$table/$find_field/$current_id_check");
                 // echo "<p>currentval$currentval</p>";
                 if(str_compare($find_val, $currentval, $type)){
-                    if($debug) file_put_contents("msgcmdlog/".date("YmdHi").rand(0,999)."x.txt",print_r([$currentval, $find_val, $type],true));
+                    if($debug) file_put_contents("msgcmdlog/".date("YmdHis").".txt","TURE1\n".print_r([$currentval, $find_val, $type],true)."\n\n", FILE_APPEND | LOCK_EX);
                     return sdata_filtercheck($table, $ids, $filtercheck, $current_id_check, $currentcount, $limit, $debug);
                     // $ids[] = $item;
                 }
                 else{
-                    if($debug) file_put_contents("msgcmdlog/XX".date("YmdHi").rand(0,999)."XX.txt",print_r([$currentval, $find_val, $type],true));
+                    if($debug) file_put_contents("msgcmdlog/".date("YmdHis").".txt","FALSE1\n".print_r([$currentval, $find_val, $type],true)."\n\n", FILE_APPEND | LOCK_EX);
                     return false;
                 }
             }
@@ -186,12 +187,12 @@ function sdata_filtercheck($table, &$ids, &$filtercheck, &$current_id_check, &$c
                     // echo "<p>currentval$currentval</p>";
                     $id_get = "";
                     if(str_compare($find_val, $currentval, $type)){
-                        if($debug) file_put_contents("msgcmdlog/".date("YmdHi").rand(0,999).".txt",print_r([$currentval, $find_val, $type],true));
+                        if($debug) file_put_contents("msgcmdlog/".date("YmdHis").".txt","TURE2\n".print_r([$currentval, $find_val, $type],true)."\n\n", FILE_APPEND | LOCK_EX);
                         $id_get = sdata_filtercheck($table, $ids, $filtercheck, $item, $currentcount, $limit, $debug);
                         // $ids[] = $item;
                     }
                     else{
-                        if($debug) file_put_contents("msgcmdlog/XXX".date("YmdHi").rand(0,999).".txt",print_r([$currentval, $find_val, $type],true));
+                        if($debug) file_put_contents("msgcmdlog/".date("YmdHis").".txt","FALSE2\n".print_r([$currentval, $find_val, $type],true)."\n\n", FILE_APPEND | LOCK_EX);
                     }
                     // echo "<p>id_get$id_get</p>";
                     if(!empty($id_get)){
