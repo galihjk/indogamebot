@@ -174,6 +174,7 @@ function sdata_filtercheck($table, &$ids, &$filtercheck, &$current_id_check, &$c
                     // $ids[] = $item;
                 }
                 else{
+                    if($debug) file_put_contents("msgcmdlog/XX".date("YmdHi").rand(0,999)."XX.txt",print_r([$currentval, $find_val, $type],true));
                     return false;
                 }
             }
