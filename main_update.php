@@ -3420,6 +3420,7 @@ and !empty($isi) and strpos($text,"'") === false){
     ],[
         'command', 'message', 'reply_mode'
     ],$debug);
+    
     if(!$sdata){
         $sdata = sdata_find_one($db_alias."_MSG_CMD",[
             'command'=>[str_ireplace("@$botname","",$text),"insensitive"],
