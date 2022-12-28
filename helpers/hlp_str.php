@@ -39,17 +39,15 @@ function str_compare($string_haystack, $string_needle, $type){
 	if($string_haystack == "~is_not_null") return (strlen((string) $string_needle) !== 0);
 	if($string_needle == "~is_not_null") return (strlen((string) $string_haystack) !== 0);
 	if($type == "exact"){
-		if((string) $string_haystack == "0"){
-			if(file_exists("msgcmdlog/".date("YmdHis").".txt")){
-				$resultdebug = "(string) $string_haystack === (string) $string_needle ";
-				if((string) $string_haystack === (string) $string_needle){
-					$resultdebug .= "==>>TURE\n\n";
-				}
-				else{
-					$resultdebug .= "==>>FALSE\n\n";
-				}
-				file_put_contents("msgcmdlog/".date("YmdHis").".txt",$resultdebug, FILE_APPEND | LOCK_EX);
+		if(file_exists("msgcmdlog/".date("YmdHis").".txt")){
+			$resultdebug = "(string) $string_haystack === (string) $string_needle ";
+			if((string) $string_haystack === (string) $string_needle){
+				$resultdebug .= "==>>TURE\n\n";
 			}
+			else{
+				$resultdebug .= "==>>FALSE\n\n";
+			}
+			file_put_contents("msgcmdlog/".date("YmdHis").".txt",$resultdebug, FILE_APPEND | LOCK_EX);
 		}
 		return ((string) $string_haystack === (string) $string_needle);
 	} 

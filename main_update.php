@@ -3388,7 +3388,8 @@ or strpos($isi,"@indogamebot") !== false
     $hasil = KirimPerintahX($token,'sendMessage',$data);
     // $message_out = json_decode($hasil,true);
     $message_out = $hasil;
-    $admin_mentions[$keynya."l".$message_id]=$message_out['result']['message_id'];
+    $keymessaggeid = $keynya."l".$message_id;
+    $admin_mentions[$keymessaggeid]=$message_out['result']['message_id'];
 }
 
 elseif(($chatid == $admingroup or in_array($chatid,$groups) or $jenis == "private")
