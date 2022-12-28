@@ -3429,7 +3429,9 @@ and !empty($isi) and strpos($text,"'") === false){
             'message' => "~is_not_null",
         ],[
             'command', 'message', 'reply_mode'
-        ],$debug);
+        ]
+            ,$debug
+        );
     }
     if(!$sdata){
         $sdata = sdata_find_one($db_alias."_MSG_CMD",[
@@ -3440,7 +3442,9 @@ and !empty($isi) and strpos($text,"'") === false){
             'whole_word'=>2,
         ],[
             'command', 'message', 'reply_mode'
-        ],$debug);
+        ]
+            ,$debug
+        );
     }
     if(!$sdata){
         $sdata = sdata_find_one($db_alias."_MSG_CMD",[
@@ -3451,7 +3455,9 @@ and !empty($isi) and strpos($text,"'") === false){
             'whole_word'=>0,
         ],[
             'command', 'message', 'reply_mode'
-        ],$debug);
+        ]
+            ,$debug
+        );
     }
     if(!$sdata){
         $sdata = sdata_find_one($db_alias."_MSG_CMD",[
@@ -3460,9 +3466,9 @@ and !empty($isi) and strpos($text,"'") === false){
             'case_sensitive' => 0,
             'whole_word'=>2,
             'message' => "~is_not_null",
-        ],[
-            'command', 'message', 'reply_mode'
-        ],$debug);
+        ]
+            ,$debug
+        );
     }
     if(!$sdata){
         $sdata = sdata_find_one($db_alias."_MSG_CMD",[
@@ -3473,7 +3479,9 @@ and !empty($isi) and strpos($text,"'") === false){
             'message' => "~is_not_null",
         ],[
             'command', 'message', 'reply_mode'
-        ],$debug);
+        ]
+            ,$debug
+        );
     }
 
     $output = "";
