@@ -3430,7 +3430,7 @@ and !empty($isi) and strpos($text,"'") === false){
         ],[
             'command', 'message', 'reply_mode'
         ]
-            ,$debug
+            // ,$debug
         );
     }
     if(!$sdata){
@@ -3443,7 +3443,7 @@ and !empty($isi) and strpos($text,"'") === false){
         ],[
             'command', 'message', 'reply_mode'
         ]
-            ,$debug
+            // ,$debug
         );
     }
     if(!$sdata){
@@ -3456,7 +3456,7 @@ and !empty($isi) and strpos($text,"'") === false){
         ],[
             'command', 'message', 'reply_mode'
         ]
-            ,$debug
+            // ,$debug
         );
     }
     if(!$sdata){
@@ -3467,7 +3467,7 @@ and !empty($isi) and strpos($text,"'") === false){
             'whole_word'=>2,
             'message' => "~is_not_null",
         ]
-            ,$debug
+            // ,$debug
         );
     }
     if(!$sdata){
@@ -3480,7 +3480,7 @@ and !empty($isi) and strpos($text,"'") === false){
         ],[
             'command', 'message', 'reply_mode'
         ]
-            ,$debug
+            // ,$debug
         );
     }
 
