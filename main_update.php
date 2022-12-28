@@ -3412,57 +3412,24 @@ and !empty($isi) and strpos($text,"'") === false){
         $debug = false;
     }
     $sdata = sdata_find_one($db_alias."_MSG_CMD",[
-        'command'=>[str_ireplace("@$botname","",$text),"insensitive"],
+        'command'=>[str_ireplace("@$botname","",$text),"exact"],
         'active' => 1,
-        'case_sensitive' => 0,
+        'case_sensitive' => 1,
         'whole_word'=>1,
         'message' => "~is_not_null",
     ],[
         'command', 'message', 'reply_mode'
-    ]);
+    ],$debug);
     if(!$sdata){
         $sdata = sdata_find_one($db_alias."_MSG_CMD",[
-            'command'=>[str_ireplace("@$botname","",$text),"contains_insensitive"],
+            'command'=>[str_ireplace("@$botname","",$text),"insensitive"],
             'active' => 1,
             'case_sensitive' => 0,
-            'whole_word'=>0,
-            'message' => "~is_not_null",
-        ],[
-            'command', 'message', 'reply_mode'
-        ]);
-    }
-    if(!$sdata){
-        $sdata = sdata_find_one($db_alias."_MSG_CMD",[
-            'command'=>[str_ireplace("@$botname","",$text),"first_insensitive"],
-            'active' => 1,
-            'case_sensitive' => 0,
-            'whole_word'=>2,
-            'message' => "~is_not_null",
-        ],[
-            'command', 'message', 'reply_mode'
-        ]);
-    }
-    if(!$sdata){
-        $sdata = sdata_find_one($db_alias."_MSG_CMD",[
-            'command'=>[str_ireplace("@$botname","",$text),"exact"],
-            'active' => 1,
-            'case_sensitive' => 1,
             'whole_word'=>1,
             'message' => "~is_not_null",
         ],[
             'command', 'message', 'reply_mode'
-        ]);
-    }
-    if(!$sdata){
-        $sdata = sdata_find_one($db_alias."_MSG_CMD",[
-            'command'=>[str_ireplace("@$botname","",$text),"contains_sensitive"],
-            'active' => 1,
-            'message' => "~is_not_null",
-            'case_sensitive' => 1,
-            'whole_word'=>0,
-        ],[
-            'command', 'message', 'reply_mode'
-        ]);
+        ],$debug);
     }
     if(!$sdata){
         $sdata = sdata_find_one($db_alias."_MSG_CMD",[
@@ -3473,7 +3440,40 @@ and !empty($isi) and strpos($text,"'") === false){
             'whole_word'=>2,
         ],[
             'command', 'message', 'reply_mode'
-        ]);
+        ],$debug);
+    }
+    if(!$sdata){
+        $sdata = sdata_find_one($db_alias."_MSG_CMD",[
+            'command'=>[str_ireplace("@$botname","",$text),"contains_sensitive"],
+            'active' => 1,
+            'message' => "~is_not_null",
+            'case_sensitive' => 1,
+            'whole_word'=>0,
+        ],[
+            'command', 'message', 'reply_mode'
+        ],$debug);
+    }
+    if(!$sdata){
+        $sdata = sdata_find_one($db_alias."_MSG_CMD",[
+            'command'=>[str_ireplace("@$botname","",$text),"first_insensitive"],
+            'active' => 1,
+            'case_sensitive' => 0,
+            'whole_word'=>2,
+            'message' => "~is_not_null",
+        ],[
+            'command', 'message', 'reply_mode'
+        ],$debug);
+    }
+    if(!$sdata){
+        $sdata = sdata_find_one($db_alias."_MSG_CMD",[
+            'command'=>[str_ireplace("@$botname","",$text),"contains_insensitive"],
+            'active' => 1,
+            'case_sensitive' => 0,
+            'whole_word'=>0,
+            'message' => "~is_not_null",
+        ],[
+            'command', 'message', 'reply_mode'
+        ],$debug);
     }
 
     $output = "";
