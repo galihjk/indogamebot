@@ -3421,7 +3421,7 @@ and !empty($isi) and strpos($text,"'") === false){
     ],[
         'command', 'message', 'reply_mode'
     ]
-        ,$de_msgcmd_bug
+        // ,$de_msgcmd_bug
     );
 
     if(!$sdata){
@@ -3434,7 +3434,7 @@ and !empty($isi) and strpos($text,"'") === false){
         ],[
             'command', 'message', 'reply_mode'
         ]
-            // ,$de_msgcmd_bug
+            ,$de_msgcmd_bug
         );
     }
     if(!$sdata){
