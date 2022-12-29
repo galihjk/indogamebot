@@ -1178,40 +1178,46 @@ elseif(($chatid == $admingroup or $dari == $developer) and $isi == "/cmd"){
 elseif($chatid == $admingroup and substr($isi,0,strlen("/users")) == "/users"){
     $output = "users (by last_active):\n";
     $wherecommand = strtolower(trim(str_ireplace("/users","",$isi)));
+    if($wherecommand){
+        $sdata = sdata_find($db_alias."_USERS",[
+            'name'=>[$wherecommand,"contains_insensitive"],
+        ],100,[
+            'user_name', 'user_id', 'name',
+        ],["last_active"=>"desc"]);
+        foreach($sdata as $row){        
+            $output .= "/id_".$row['user_id']." ".substr($row['name'],0,6);
+            if(strlen($row['name'])>6){
+                $output .= "..\n";
+            }
+            else{
+                $output .= "\n";
+            }
+        }
+        $sdata = sdata_find($db_alias."_USERS",[
+            'user_name'=>[$wherecommand,"contains_insensitive"],
+        ],100,[
+            'user_name', 'user_id', 'name',
+        ]);
+        foreach($sdata as $row){        
+            $output .= "/id_".$row['user_id']." ".substr($row['name'],0,6);
+            if(strlen($row['name'])>6){
+                $output .= "..\n";
+            }
+            else{
+                $output .= "\n";
+            }
+        }
+    }
+    else{
+        $output = "..";
+    }
     // $st = $app["pdo.DB_IDG"]->prepare("select user_id, name from idg_users 
     // where LOWER(name) like '%$wherecommand%'
     // or LOWER(user_name) like '%$wherecommand%'
     // order by last_active desc nulls last limit 250");
     // $st->execute();
     // while($row = $st->fetch(PDO::FETCH_ASSOC)){
-    $sdata = sdata_find($db_alias."_USERS",[
-        'name'=>[$wherecommand,"contains_insensitive"],
-    ],100,[
-        'user_name', 'user_id', 'name',
-    ]);
-    foreach($sdata as $row){        
-        $output .= "/id_".$row['user_id']." ".substr($row['name'],0,6);
-        if(strlen($row['name'])>6){
-            $output .= "..\n";
-        }
-        else{
-            $output .= "\n";
-        }
-    }
-    $sdata = sdata_find($db_alias."_USERS",[
-        'user_name'=>[$wherecommand,"contains_insensitive"],
-    ],100,[
-        'user_name', 'user_id', 'name',
-    ]);
-    foreach($sdata as $row){        
-        $output .= "/id_".$row['user_id']." ".substr($row['name'],0,6);
-        if(strlen($row['name'])>6){
-            $output .= "..\n";
-        }
-        else{
-            $output .= "\n";
-        }
-    }
+    
 
     $output .= "\n<i>gunakan /users(spasi)(keyword) untuk mencari</i>\n";
 
@@ -3440,7 +3446,7 @@ and !empty($isi) and strpos($text,"'") === false){
     }
     if(!$sdata){
         $sdata = sdata_find_one($db_alias."_MSG_CMD",[
-            'command'=>[str_ireplace("@$botname","",$text),"first_sensitive"],
+            'command'=>[str_ireplace("@$botname","",$text),"r_first_sensitive"],
             'active' => 1,
             'message' => "~is_not_null",
             'case_sensitive' => 1,
@@ -3453,7 +3459,7 @@ and !empty($isi) and strpos($text,"'") === false){
     }
     if(!$sdata){
         $sdata = sdata_find_one($db_alias."_MSG_CMD",[
-            'command'=>[str_ireplace("@$botname","",$text),"contains_sensitive"],
+            'command'=>[str_ireplace("@$botname","",$text),"r_contains_sensitive"],
             'active' => 1,
             'message' => "~is_not_null",
             'case_sensitive' => 1,
@@ -3466,7 +3472,7 @@ and !empty($isi) and strpos($text,"'") === false){
     }
     if(!$sdata){
         $sdata = sdata_find_one($db_alias."_MSG_CMD",[
-            'command'=>[str_ireplace("@$botname","",$text),"first_insensitive"],
+            'command'=>[str_ireplace("@$botname","",$text),"r_first_insensitive"],
             'active' => 1,
             'case_sensitive' => 0,
             'whole_word'=>2,
@@ -3477,7 +3483,7 @@ and !empty($isi) and strpos($text,"'") === false){
     }
     if(!$sdata){
         $sdata = sdata_find_one($db_alias."_MSG_CMD",[
-            'command'=>[str_ireplace("@$botname","",$text),"contains_insensitive"],
+            'command'=>[str_ireplace("@$botname","",$text),"r_contains_insensitive"],
             'active' => 1,
             'case_sensitive' => 0,
             'whole_word'=>0,

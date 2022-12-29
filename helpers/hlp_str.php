@@ -62,11 +62,17 @@ function str_compare($string_haystack, $string_needle, $type){
 	if($type == "*") return true;
 	if($type == "insensitive") return (strtolower($string_haystack) == strtolower($string_needle));
 	if($type == "contains_sensitive") return str_contains($string_haystack, $string_needle);
+	if($type == "r_contains_sensitive") return str_contains($string_needle, $string_haystack);
 	if($type == "contains_insensitive") return str_contains(strtolower($string_haystack), strtolower($string_needle));
+	if($type == "r_contains_insensitive") return str_contains(strtolower($string_needle), strtolower($string_haystack));
 	if($type == "first_sensitive") return isDiawali($string_haystack, $string_needle, true);
+	if($type == "r_first_sensitive") return isDiawali($string_needle, $string_haystack, true);
 	if($type == "first_insensitive") return isDiawali($string_haystack, $string_needle, false);
+	if($type == "r_first_insensitive") return isDiawali($string_needle, $string_haystack, false);
 	if($type == "last_sensitive") return isDiakhiri($string_haystack, $string_needle, true);
+	if($type == "r_last_sensitive") return isDiakhiri($string_needle, $string_haystack, true);
 	if($type == "last_insensitive") return isDiakhiri($string_haystack, $string_needle, false);
+	if($type == "r_last_insensitive") return isDiakhiri($string_needle, $string_haystack, false);
 	echo "Type ERROR: '<pre>".print_r($type,true)."</pre>'";
 	file_put_contents("msgcmdlog/str_compare".date("YmdH").".txt","Type ERROR: '<pre>".print_r([$type,$string_haystack, $string_needle],true)."</pre>'");
 	return false;

@@ -135,7 +135,7 @@ function sdata_sort(&$ids, $table, $field, $ordertype){
     $sortdata = [];
     foreach($ids as $id){
         $val = sdata_get_one($table, $id, [$field]);
-        $sortdata[$id] = $val[$field] ?? "";
+        $sortdata[$id] = (is_numeric($val[$field]) ? (int) $val[$field] : strtolower($val[$field]));
     }
     if($ordertype == "asc") asort($sortdata);
     if($ordertype == "desc") arsort($sortdata);
@@ -183,9 +183,10 @@ function sdata_filtercheck($table, &$ids, &$filtercheck, &$current_id_check, &$c
 
             if(!empty($current_id_check)){
                 if(!file_exists("sdata/$table/$find_field/$current_id_check")) return false;
-                $currentval = file_get_contents("sdata/$table/$find_field/$current_id_check");
+                // $currentval = file_get_contents("sdata/$table/$find_field/$current_id_check");
+                $currentval = sdata_get_one($table, $current_id_check, [$find_field])[$find_field];
                 // echo "<p>currentval$currentval</p>";
-                if(str_compare($find_val, $currentval, $type)){
+                if(str_compare($currentval, $find_val, $type)){
                     if($debug) file_put_contents("msgcmdlog/".date("YmdHis").".txt","TURE1\n".print_r([$currentval, $find_val, $type],true)."\n\n", FILE_APPEND | LOCK_EX);
                     return sdata_filtercheck($table, $ids, $filtercheck, $current_id_check, $currentcount, $limit, $debug);
                     // $ids[] = $item;
@@ -199,10 +200,11 @@ function sdata_filtercheck($table, &$ids, &$filtercheck, &$current_id_check, &$c
                 $scandir = scandir("sdata/$table/$find_field/");
                 foreach($scandir as $item){
                     if(str_contains($item, '.')) continue;
-                    $currentval = file_get_contents("sdata/$table/$find_field/$item");
+                    // $currentval = file_get_contents("sdata/$table/$find_field/$item");
+                    $currentval = sdata_get_one($table, $item, [$find_field])[$find_field];
                     // echo "<p>currentval$currentval</p>";
                     $id_get = "";
-                    if(str_compare($find_val, $currentval, $type)){
+                    if(str_compare($currentval, $find_val, $type)){
                         if($debug) file_put_contents("msgcmdlog/".date("YmdHis").".txt","TURE2\n".print_r([$currentval, $find_val, $type],true)."\n\n", FILE_APPEND | LOCK_EX);
                         $id_get = sdata_filtercheck($table, $ids, $filtercheck, $item, $currentcount, $limit, $debug);
                         // $ids[] = $item;
