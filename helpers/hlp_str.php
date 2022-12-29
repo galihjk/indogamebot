@@ -3,7 +3,7 @@
 if(!function_exists('str_contains')){
     function str_contains($haystack, $needle){
 		if((string)$needle === ""){
-			return false;
+			return true;
 		}
         return (strpos($haystack, $needle) !== false);
     }
@@ -59,6 +59,7 @@ function str_compare($string_haystack, $string_needle, $type){
 		// }
 		return ((string) $string_haystack === (string) $string_needle);
 	} 
+	if($type == "*") return true;
 	if($type == "insensitive") return (strtolower($string_haystack) == strtolower($string_needle));
 	if($type == "contains_sensitive") return str_contains($string_haystack, $string_needle);
 	if($type == "contains_insensitive") return str_contains(strtolower($string_haystack), strtolower($string_needle));

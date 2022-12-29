@@ -107,8 +107,8 @@ function sdata_update_filtered($table, $filter, $sdata_update, $limit){
     return $result;
 }
 
-function sdata_find($table, $filter, $limit, $return_fields = [], $debug = false){
-    if(!file_exists("sdata/$table/$find_field")){
+function sdata_find($table, $filter, $limit, $return_fields = [], $order = [], $debug = false){
+    if(!file_exists("sdata/$table/")){
         return [];
     }
     if(empty($return_fields)){
@@ -119,11 +119,27 @@ function sdata_find($table, $filter, $limit, $return_fields = [], $debug = false
         }
     }
     $ids = sdata_get_filtered_ids($table, $filter, $limit, $debug);
+    if(!empty($order)){
+        foreach($order as $field=>$ordertype){
+            sdata_sort($ids, $table, $field, $ordertype);
+        }
+    }
     $sdata_got = [];
     foreach($ids as $id){
         $sdata_got[$id] = sdata_get_one($table, $id, $return_fields);
     }
     return $sdata_got;
+}
+
+function sdata_sort(&$ids, $table, $field, $ordertype){
+    $sortdata = [];
+    foreach($ids as $id){
+        $val = sdata_get_one($table, $id, [$field]);
+        $sortdata[$id] = $val[$field] ?? "";
+    }
+    if($ordertype == "asc") asort($sortdata);
+    if($ordertype == "desc") arsort($sortdata);
+    $ids = array_keys($sortdata);
 }
 
 function sdata_get_filtered_ids($table, $filter, $limit, $debug = false){

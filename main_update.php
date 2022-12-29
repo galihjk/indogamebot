@@ -476,84 +476,82 @@ if (isset($message_data['new_chat_members'])) {
 */
 
 //balas chat join / left
-/*
-    elseif($chatid == $admingroup and !empty($message_data['reply_to_message'])
-    and $message_data['reply_to_message']['from']['username'] == $botname
-    and strpos($message_data['reply_to_message']['text'],"*Pesan ini bisa dibalas. ") !== false ){
-        $explode = explode("*Pesan ini bisa dibalas. ",$message_data['reply_to_message']['text']);
-        $message_idnya = $explode[1];
-        $chatidnya = explode("~",$message_data['reply_to_message']['text'])[0];
-        if(!in_array($chatidnya,$groups)){
-            $chatidnya = $maingroup;
-            $data = array(
-                'chat_id' => $admingroup,
-                'text'=> "ERROR $chatidnya",
-                'parse_mode'=>'HTML'
-                );
-            $hasil = KirimPerintahX($token,'sendMessage',$data);
-        }
-        // echo "idg_message_idnya$message_idnya idg_chatidnya$chatidnya\n";
-        $textnya = $message_data['text'];
-        include('convert_message.php');
-        $output = $textnya;
-        if(substr($output,0,7) == "*photo "){
-            $explode = explode("|",$output);
-            $file_id = $explode[1];
-            $data = array(
-                'chat_id' => $chatidnya,
-                'photo'=> $file_id,
-                'caption' => str_replace("*photo ","",$explode[0]),
-                'reply_to_message_id' => $message_idnya
-            );	
-            $hasil = KirimPerintahX($token,'sendPhoto',$data);	
-        }elseif(substr($output,0,9) == "*sticker "){
-            $explode = explode("|",$output);
-            $stickernya = $explode[1];
-            $data = array(
-                'chat_id' => $chatidnya,
-                'sticker'=> $stickernya,
-                'reply_to_message_id' => $message_idnya
-            );	
-            $hasil = KirimPerintahX($token,'sendSticker',$data);	
-        }elseif(substr($output,0,10) == "*document "){
-            $explode = explode("|",$output);
-            $file_id = $explode[1];
-            $data = array(
-                'chat_id' => $chatidnya,
-                'document'=> $file_id,
-                'reply_to_message_id' => $message_idnya
-            );	
-            $hasil = KirimPerintahX($token,'sendDocument',$data);	
-        }elseif(substr($output,0,7) == "*voice "){
-            $explode = explode("|",$output);
-            $file_id = $explode[1];
-            $data = array(
-                'chat_id' => $chatidnya,
-                'voice'=> $file_id,
-                'reply_to_message_id' => $message_idnya
-            );	
-            $hasil = KirimPerintahX($token,'sendVoice',$data);	
-        }elseif(substr($output,0,7) == "*location "){
-            $explode = explode("|",$output);
-            $explode2 = explode(",",$explode[1]);
-            $data = array(
-                'chat_id' => $chatidnya,
-                'latitude'=> $explode2[0],
-                'longitude'=> $explode2[1],
-                'reply_to_message_id' => $message_idnya
-            );	
-            $hasil = KirimPerintahX($token,'sendLocation',$data);	
-        }else{
-            $data = array(
-                'chat_id' => $chatidnya,
-                'text'=> $output,
-                'disable_web_page_preview'=>true,
-                'reply_to_message_id' => $message_idnya
-                );
-            $hasil = KirimPerintahX($token,'sendMessage',$data);
-        }
+elseif($chatid == $admingroup and !empty($message_data['reply_to_message'])
+and $message_data['reply_to_message']['from']['username'] == $botname
+and strpos($message_data['reply_to_message']['text'],"*Pesan ini bisa dibalas. ") !== false ){
+    $explode = explode("*Pesan ini bisa dibalas. ",$message_data['reply_to_message']['text']);
+    $message_idnya = $explode[1];
+    $chatidnya = explode("~",$message_data['reply_to_message']['text'])[0];
+    if(!in_array($chatidnya,$groups)){
+        $chatidnya = $maingroup;
+        $data = array(
+            'chat_id' => $admingroup,
+            'text'=> "ERROR $chatidnya",
+            'parse_mode'=>'HTML'
+            );
+        $hasil = KirimPerintahX($token,'sendMessage',$data);
     }
-*/
+    // echo "idg_message_idnya$message_idnya idg_chatidnya$chatidnya\n";
+    $textnya = $message_data['text'];
+    include('convert_message.php');
+    $output = $textnya;
+    if(substr($output,0,7) == "*photo "){
+        $explode = explode("|",$output);
+        $file_id = $explode[1];
+        $data = array(
+            'chat_id' => $chatidnya,
+            'photo'=> $file_id,
+            'caption' => str_replace("*photo ","",$explode[0]),
+            'reply_to_message_id' => $message_idnya
+        );	
+        $hasil = KirimPerintahX($token,'sendPhoto',$data);	
+    }elseif(substr($output,0,9) == "*sticker "){
+        $explode = explode("|",$output);
+        $stickernya = $explode[1];
+        $data = array(
+            'chat_id' => $chatidnya,
+            'sticker'=> $stickernya,
+            'reply_to_message_id' => $message_idnya
+        );	
+        $hasil = KirimPerintahX($token,'sendSticker',$data);	
+    }elseif(substr($output,0,10) == "*document "){
+        $explode = explode("|",$output);
+        $file_id = $explode[1];
+        $data = array(
+            'chat_id' => $chatidnya,
+            'document'=> $file_id,
+            'reply_to_message_id' => $message_idnya
+        );	
+        $hasil = KirimPerintahX($token,'sendDocument',$data);	
+    }elseif(substr($output,0,7) == "*voice "){
+        $explode = explode("|",$output);
+        $file_id = $explode[1];
+        $data = array(
+            'chat_id' => $chatidnya,
+            'voice'=> $file_id,
+            'reply_to_message_id' => $message_idnya
+        );	
+        $hasil = KirimPerintahX($token,'sendVoice',$data);	
+    }elseif(substr($output,0,7) == "*location "){
+        $explode = explode("|",$output);
+        $explode2 = explode(",",$explode[1]);
+        $data = array(
+            'chat_id' => $chatidnya,
+            'latitude'=> $explode2[0],
+            'longitude'=> $explode2[1],
+            'reply_to_message_id' => $message_idnya
+        );	
+        $hasil = KirimPerintahX($token,'sendLocation',$data);	
+    }else{
+        $data = array(
+            'chat_id' => $chatidnya,
+            'text'=> $output,
+            'disable_web_page_preview'=>true,
+            'reply_to_message_id' => $message_idnya
+            );
+        $hasil = KirimPerintahX($token,'sendMessage',$data);
+    }
+}
 
 //developer
 /*
@@ -1214,6 +1212,9 @@ elseif($chatid == $admingroup and substr($isi,0,strlen("/users")) == "/users"){
             $output .= "\n";
         }
     }
+
+    $output .= "\n<i>gunakan /users(spasi)(keyword) untuk mencari</i>\n";
+
     if(strlen($output)>3900){
         $output = substr($output,0,3900) . "... (kepanjangan)";
     }
