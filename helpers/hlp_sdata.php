@@ -99,7 +99,7 @@ function sdata_update($table, $id, $sdata_update){
 }
 
 function sdata_update_filtered($table, $filter, $sdata_update, $limit){
-    $ids = sdata_get_filtered_ids($table, $filter, $limit, "exact");
+    $ids = sdata_get_filtered_ids($table, $filter, $limit);
     $result = [];
     foreach($ids as $id){
         $result[] = sdata_update($table, $id, $sdata_update);
@@ -118,7 +118,46 @@ function sdata_find($table, $filter, $limit, $return_fields = [], $order = [], $
             $return_fields[] = $item;
         }
     }
-    $ids = sdata_get_filtered_ids($table, $filter, $limit, $debug);
+    
+    $ordered_ids = [];
+    if(!empty($order)){
+        foreach($order as $field=>$ordertype){
+            $sortdata = [];
+            if(empty($ordered_ids)){
+                $scandir = scandir("sdata/$table/$field");
+                foreach($scandir as $item){
+                    if(str_contains($item, '.')) continue;
+                    $ordered_ids[] = $item;
+                }
+            }
+            foreach($ordered_ids as $id){
+                $val = sdata_get_one($table, $id, [$field])[$field];
+                if(!empty($filter[$field])){
+                    $type = "exact";
+                    $find_field = $field;
+                    if(is_array($filter[$field])){
+                        $find_val = $filter[$field][0];
+                        $type = $filter[$field][1];
+                    }
+                    else{
+                        $find_val = $filter[$field];
+                    }
+                    if(!str_compare($val, $find_val, $type)) continue;
+                }
+                $sortdata[$id] = (is_numeric($val) ? (int) $val : strtolower($val));
+            }
+            if($ordertype == "asc") asort($sortdata);
+            if($ordertype == "desc") arsort($sortdata);
+            $ordered_ids = array_keys($sortdata);
+            if(count($ordered_ids) > $limit){
+                foreach($ordered_ids as $k=>$v){
+                    if($k >= $limit) unset($ordered_ids[$k]);
+                }
+            }
+        }
+    }
+
+    $ids = sdata_get_filtered_ids($table, $filter, $limit, $ordered_ids, $debug);
     if(!empty($order)){
         foreach($order as $field=>$ordertype){
             sdata_sort($ids, $table, $field, $ordertype);
@@ -142,16 +181,16 @@ function sdata_sort(&$ids, $table, $field, $ordertype){
     $ids = array_keys($sortdata);
 }
 
-function sdata_get_filtered_ids($table, $filter, $limit, $debug = false){
+function sdata_get_filtered_ids($table, $filter, $limit, $ordered_ids = [], $debug = false){
     $ids = [];
     $filtercheck = $filter;
     $currentcount = 0;
     $current_id_check = 0;
-    sdata_filtercheck($table, $ids, $filtercheck, $current_id_check, $currentcount, $limit, $debug);
+    sdata_filtercheck($table, $ids, $filtercheck, $current_id_check, $currentcount, $limit, $ordered_ids, $debug);
     return $ids;
 }
 
-function sdata_filtercheck($table, &$ids, &$filtercheck, &$current_id_check, &$currentcount, $limit, $debug = false){
+function sdata_filtercheck($table, &$ids, $filtercheck, &$current_id_check, &$currentcount, $limit, $ordered_ids = [], $debug = false){
     // echo "<pre>";
     // print_r($ids);
     // print_r($filtercheck);
@@ -188,7 +227,7 @@ function sdata_filtercheck($table, &$ids, &$filtercheck, &$current_id_check, &$c
                 // echo "<p>currentval$currentval</p>";
                 if(str_compare($currentval, $find_val, $type)){
                     if($debug) file_put_contents("msgcmdlog/".date("YmdHis").".txt","TURE1\n".print_r([$currentval, $find_val, $type],true)."\n\n", FILE_APPEND | LOCK_EX);
-                    return sdata_filtercheck($table, $ids, $filtercheck, $current_id_check, $currentcount, $limit, $debug);
+                    return sdata_filtercheck($table, $ids, $filtercheck, $current_id_check, $currentcount, $limit, $ordered_ids, $debug);
                     // $ids[] = $item;
                 }
                 else{
@@ -197,16 +236,22 @@ function sdata_filtercheck($table, &$ids, &$filtercheck, &$current_id_check, &$c
                 }
             }
             else{
-                $scandir = scandir("sdata/$table/$find_field/");
-                foreach($scandir as $item){
-                    if(str_contains($item, '.')) continue;
+                $chekids = $ordered_ids;
+                if(empty($chekids)){
+                    $scandir = scandir("sdata/$table/$find_field/");
+                    foreach($scandir as $item){
+                        if(str_contains($item, '.')) continue;
+                        $chekids[] = $item;
+                    }
+                }
+                foreach($chekids as $item){
                     // $currentval = file_get_contents("sdata/$table/$find_field/$item");
                     $currentval = sdata_get_one($table, $item, [$find_field])[$find_field];
                     // echo "<p>currentval$currentval</p>";
                     $id_get = "";
                     if(str_compare($currentval, $find_val, $type)){
                         if($debug) file_put_contents("msgcmdlog/".date("YmdHis").".txt","TURE2\n".print_r([$currentval, $find_val, $type],true)."\n\n", FILE_APPEND | LOCK_EX);
-                        $id_get = sdata_filtercheck($table, $ids, $filtercheck, $item, $currentcount, $limit, $debug);
+                        $id_get = sdata_filtercheck($table, $ids, $filtercheck, $item, $currentcount, $limit, $ordered_ids, $debug);
                         // $ids[] = $item;
                     }
                     else{
@@ -233,7 +278,7 @@ function sdata_filtercheck($table, &$ids, &$filtercheck, &$current_id_check, &$c
 }
 
 function sdata_find_one($table, $filter, $return_fields = [], $debug = false){
-    $data = sdata_find($table, $filter, 1, $return_fields, $debug);
+    $data = sdata_find($table, $filter, 1, $return_fields, [], $debug);
     $sdata_got = [];
     if(!empty($data)){
         foreach($data as $item){
