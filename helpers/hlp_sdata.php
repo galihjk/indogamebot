@@ -182,11 +182,11 @@ function sdata_find($table, $filter, $limit, $return_fields = [], $order = [], $
     }
 
     $ids = sdata_get_filtered_ids($table, $filter, $limit, $ordered_ids, $debug);
-    if(!empty($order)){
-        foreach($order as $field=>$ordertype){
-            sdata_sort($ids, $table, $field, $ordertype);
-        }
-    }
+    // if(!empty($order)){
+    //     foreach($order as $field=>$ordertype){
+    //         sdata_sort($ids, $table, $field, $ordertype);
+    //     }
+    // }
     $sdata_got = [];
     foreach($ids as $id){
         $sdata_got[$id] = sdata_get_one($table, $id, $return_fields);
@@ -268,6 +268,7 @@ function sdata_filtercheck($table, &$ids, $filtercheck, &$current_id_check, &$cu
                         $chekids[] = $item;
                     }
                 }
+                if($debug) file_put_contents("msgcmdlog/".date("YmdHis").".txt","chekids=[".print_r($chekids,true)."], find_field=[$find_field] find_val=[$find_val] type=[$type]\n\n", FILE_APPEND | LOCK_EX);
                 foreach($chekids as $item){
                     // $currentval = file_get_contents("sdata/$table/$find_field/$item");
                     $currentval = sdata_get_one($table, $item, [$find_field])[$find_field];
