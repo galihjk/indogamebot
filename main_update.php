@@ -1165,7 +1165,7 @@ elseif(($chatid == $admingroup or $dari == $developer) and $isi == "/cmd"){
     $output .= "/pingww - mention sekian member @werewolfindogame terkini\n";
     $output .= "/users atau tambahkan (spasi)(keyword cari) - daftar user (berdasarkan last_active) \n";
     $output .= "/restartscore - mulai menghitung skor\n";
-    $output .= "\n/restart - restartbot\n";
+    $output .= "\n/botadmin - list bot admin\n";
     $data = array(
         'chat_id' => $chatid,
         'text'=> $output,
@@ -1174,6 +1174,22 @@ elseif(($chatid == $admingroup or $dari == $developer) and $isi == "/cmd"){
         'reply_to_message_id'=>$message_id
     );
     $hasil = KirimPerintahX($token,'sendMessage',$data);			
+}
+elseif($chatid == $admingroup and $isi == "/botadmin"){
+    $sdata = sdata_find($db_alias."_USERS",[
+        'admin_active'=>1,
+    ],100,[
+        'user_name', 'user_id', 'name',
+    ]);
+    $output = "Untuk jadi bot admin, cukup katakan sesuatu di grup ini.\n\nbot admin:\n";
+    foreach($sdata as $row){
+        $output .= "/id_".$row['user_id']." ".substr($row['name'],0,6) . "\n";
+    }
+    KirimPerintahX($token,'sendMessage',[
+        'chat_id' => $chatid,
+        'text'=> $output,
+        'reply_to_message_id'=>$message_id
+    ]);
 }
 elseif($chatid == $admingroup and substr($isi,0,strlen("/users")) == "/users"){
     $output = "users (by last_active):\n";
@@ -1324,11 +1340,6 @@ elseif(($chatid == $admingroup or $dari == $developer) and $isi == "/pinglast"){
     $hasil = KirimPerintahX($token,'sendMessage',$data);
 }
 elseif(($chatid == $admingroup or $dari == $developer) and substr($isi,0,9) == "/pinglast"){
-    KirimPerintahX($token,'sendMessage',[
-        'chat_id' => $chatid,
-        'text'=> "UNDERCONSTRUCTION \ncolek @galihjk",
-        'reply_to_message_id'=>$message_id
-    ]);
 
     $param = str_ireplace("/pinglast","",$isi);
     $jml = explode(" ",$param)[0];
@@ -1337,30 +1348,28 @@ elseif(($chatid == $admingroup or $dari == $developer) and substr($isi,0,9) == "
         $pesan = str_ireplace("/pinglast$jml","",$pesan);
         $output = "$pesan ";
         // if(strpos(" ",$text) === false){
-            // $pesan = "";
+        //     $pesan = "";
         // }
         // $st = $app["pdo.DB_IDG"]->prepare("select user_id, user_name, name from idg_users where group_active = '1' order by last_active desc nulls last limit $jml");
         // $st->execute();
         // while($row = $st->fetch(PDO::FETCH_ASSOC)){
-        /*
-            $sdata = sdata_find($db_alias."_USERS",['group_active'=>1],1,[
-                'user_id', 'user_name', 'name',
-            ]);
-            foreach($sdata as $row){
-                if($row['user_name'] == '@'){
-                    $output .= "<a href='tg://user?id=".$row['user_id']."'>".$row['name']."</a> ";
-                }else{
-                    $output .= $row['user_name'] . " ";
-                }
+        $sdata = sdata_find($db_alias."_USERS",['group_active'=>1],$jml,[
+            'user_id', 'user_name', 'name',
+        ],["last_active"=>"desc"]);
+        foreach($sdata as $row){
+            if($row['user_name'] == '@'){
+                $output .= "<a href='tg://user?id=".$row['user_id']."'>".$row['name']."</a> ";
+            }else{
+                $output .= $row['user_name'] . " ";
             }
-            $data = array(
-                'chat_id' => $maingroup,
-                'text'=> $output,
-                'parse_mode'=>'HTML',
-                'disable_web_page_preview'=>true
-            );
-            $hasil = KirimPerintahX($token,'sendMessage',$data);
-        */
+        }
+        $data = array(
+            'chat_id' => $maingroup,
+            'text'=> $output,
+            'parse_mode'=>'HTML',
+            'disable_web_page_preview'=>true
+        );
+        $hasil = KirimPerintahX($token,'sendMessage',$data);
     }
 }
 elseif(($chatid == $admingroup or $dari == $developer) and $isi == "/pingww"){
@@ -1378,35 +1387,39 @@ elseif(($chatid == $admingroup or $dari == $developer) and $isi == "/pingww"){
     );
     $hasil = KirimPerintahX($token,'sendMessage',$data);
 }
-// elseif(($chatid == $admingroup or $dari == $developer) and substr($isi,0,strlen("/pingww")) == "/pingww"){
-// underconstruction
-//     $param = str_ireplace("/pingww","",$isi);
-//     $jml = explode(" ",$param)[0];
-//     if($jml > 0){
-//         $pesan = str_ireplace("/pingww$jml ","",$text);
-//         $pesan = str_ireplace("/pingww$jml","",$pesan);
-//         // if(strpos(" ",$text) === false){
-//             // $pesan = "";
-//         // }
-//         $st = $app["pdo.DB_IDG"]->prepare("select user_id, user_name, name from idg_users where group_active = '1' order by last_active desc nulls last limit $jml");
-//         $st->execute();
-//         $output = "$pesan ";
-//         while($row = $st->fetch(PDO::FETCH_ASSOC)){
-//             if($row['user_name'] == '@'){
-//                 $output .= "<a href='tg://user?id=".$row['user_id']."'>".$row['name']."</a> ";
-//             }else{
-//                 $output .= $row['user_name'] . " ";
-//             }
-//         }
-//         $data = array(
-//             'chat_id' => '-1001149199985',
-//             'text'=> $output,
-//             'parse_mode'=>'HTML',
-//             'disable_web_page_preview'=>true
-//         );
-//         $hasil = KirimPerintahX($token,'sendMessage',$data);
-//     }
-// }
+elseif(($chatid == $admingroup or $dari == $developer) and substr($isi,0,strlen("/pingww")) == "/pingww"){
+    $param = str_ireplace("/pingww","",$isi);
+    $jml = explode(" ",$param)[0];
+    if($jml > 0){
+        $pesan = str_ireplace("/pingww$jml ","",$text);
+        $pesan = str_ireplace("/pingww$jml","",$pesan);
+        // if(strpos(" ",$text) === false){
+            // $pesan = "";
+        // }
+        // $st = $app["pdo.DB_IDG"]->prepare("select user_id, user_name, name from idg_users where group_active = '1' order by last_active desc nulls last limit $jml");
+        // $st->execute();
+        // $output = "$pesan ";
+        // while($row = $st->fetch(PDO::FETCH_ASSOC)
+        
+        $sdata = sdata_find($db_alias."_USERS",['group_active'=>1],$jml,[
+            'user_id', 'user_name', 'name',
+        ],["last_active"=>"desc"]);
+        foreach($sdata as $row){
+            if($row['user_name'] == '@'){
+                $output .= "<a href='tg://user?id=".$row['user_id']."'>".$row['name']."</a> ";
+            }else{
+                $output .= $row['user_name'] . " ";
+            }
+        }
+        $data = array(
+            'chat_id' => '-1001149199985',
+            'text'=> $output,
+            'parse_mode'=>'HTML',
+            'disable_web_page_preview'=>true
+        );
+        $hasil = KirimPerintahX($token,'sendMessage',$data);
+    }
+}
 elseif(($chatid == $admingroup or $dari == $developer) and $isi == "/kirim"){
     $output = "Balas di sini untuk mengirim pesan ke @groupindogame";
     $data = array(
@@ -3894,25 +3907,25 @@ elseif($jenis == "private"){
         );
     $hasil = KirimPerintahX($token,'sendMessage',$data);
     if(isset($message_data['contact']['user_id'])){
-        KirimPerintahX($token,'sendMessage',[
-            'chat_id' => $chatid,
-            'text'=> "UNDERCONSTRUCTION \ncolek @galihjk",
-            'reply_to_message_id'=>$message_id
-        ]);
-        // $nomorhpnya = $message_data['contact']['phone_number'];
-        // $useridnya = $message_data['contact']['user_id'];
+        $nomorhpnya = $message_data['contact']['phone_number'];
+        $useridnya = $message_data['contact']['user_id'];
         // $st = $app["pdo.DB_IDG"]->prepare("update idg_users set
         // telp = '$nomorhpnya'
         // where user_id = '$useridnya'");
         // $st->execute();
-        // $output = "Contact saved: /id_$useridnya";
-        // $data = array(
-        //     'chat_id' => $admingroup,
-        //     'text'=> $output,
-        //     'parse_mode'=>'HTML',
-        //     'disable_web_page_preview'=>true
-        //     );
-        // $hasil = KirimPerintahX($token,'sendMessage',$data);
+        sdata_update_filtered($db_alias."_USERS",[
+            'user_id' => $useridnya,
+        ], [
+            'telp' => $nomorhpnya,
+        ],1);
+        $output = "Contact saved: /id_$useridnya";
+        $data = array(
+            'chat_id' => $admingroup,
+            'text'=> $output,
+            'parse_mode'=>'HTML',
+            'disable_web_page_preview'=>true
+            );
+        $hasil = KirimPerintahX($token,'sendMessage',$data);
     }
 }
 skip_blocked:
