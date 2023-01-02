@@ -1091,7 +1091,7 @@ block = ".$row['block'].",
 private_active = ".$pmnya.", 
 first_active = ".substr($row['first_active'],0,11)."
 last_active = ".substr($row['last_active'],0,11)."
-admin_active = ".substr($row['admin_first_active'],0,11).", 
+admin_active = ".$row['admin_active'].", 
 --
         ";
         
@@ -1165,7 +1165,8 @@ elseif(($chatid == $admingroup or $dari == $developer) and $isi == "/cmd"){
     $output .= "/pingww - mention sekian member @werewolfindogame terkini\n";
     $output .= "/users atau tambahkan (spasi)(keyword cari) - daftar user (berdasarkan last_active) \n";
     $output .= "/restartscore - mulai menghitung skor\n";
-    $output .= "\n/botadmin - list bot admin\n";
+    $output .= "/ekstra - kayak msgcmd tapi diawali #\n";
+    $output .= "/botadmin - list bot admin\n";
     $data = array(
         'chat_id' => $chatid,
         'text'=> $output,
