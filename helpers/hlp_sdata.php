@@ -142,22 +142,41 @@ function sdata_find($table, $filter, $limit, $return_fields = [], $order = [], $
                     else{
                         $find_val = $filter[$field];
                     }
-                    echo "<p>";
-                    if($debug){
-                        print_r([$val, $find_val, $type, str_compare($val, $find_val, $type)]);
-                    }
-                    echo "</p>";
                     if(!str_compare($val, $find_val, $type)) continue;
+                    if($debug){
+                        echo "<p>";
+                        print_r([$val, $find_val, $type, str_compare($val, $find_val, $type)]);
+                        echo "</p>";
+                    }
                 }
                 $sortdata[$id] = (is_numeric($val) ? (int) $val : strtolower($val));
+            }
+            if($debug){
+                echo "<p>";
+                print_r($sortdata);
+                echo "</p>";
             }
             if($ordertype == "asc") asort($sortdata);
             if($ordertype == "desc") arsort($sortdata);
             $ordered_ids = array_keys($sortdata);
+            if($debug){
+                echo "<p> $ordertype ";
+                print_r($sortdata);
+                echo "</p>";
+                echo "<p>ordered_ids=";
+                print_r($ordered_ids);
+                echo "</p>";
+            }
             if(count($ordered_ids) > $limit){
                 foreach($ordered_ids as $k=>$v){
                     if($k >= $limit) unset($ordered_ids[$k]);
                 }
+            }
+            if($debug){
+                echo "<p> limit$limit ";
+                echo " ordered_ids=";
+                print_r($ordered_ids);
+                echo "</p>";
             }
         }
     }
