@@ -1396,9 +1396,9 @@ elseif(($chatid == $admingroup or $dari == $developer) and substr($isi,0,strlen(
         // if(strpos(" ",$text) === false){
             // $pesan = "";
         // }
+        $output = "$pesan ";
         // $st = $app["pdo.DB_IDG"]->prepare("select user_id, user_name, name from idg_users where group_active = '1' order by last_active desc nulls last limit $jml");
         // $st->execute();
-        // $output = "$pesan ";
         // while($row = $st->fetch(PDO::FETCH_ASSOC)
         
         $sdata = sdata_find($db_alias."_USERS",['group_active'=>1],$jml,[
