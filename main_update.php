@@ -1183,7 +1183,7 @@ elseif($chatid == $admingroup and $isi == "/botadmin"){
     ]);
     $output = "Untuk jadi bot admin, cukup katakan sesuatu di grup ini.\n\nbot admin:\n";
     foreach($sdata as $row){
-        $output .= "/id_".$row['user_id']." ".substr($row['name'],0,6) . "\n";
+        $output .= "/id_".$row['user_id']." ". explode(" ",$row['name'])[0] . "\n";
     }
     KirimPerintahX($token,'sendMessage',[
         'chat_id' => $chatid,
@@ -1201,7 +1201,7 @@ elseif($chatid == $admingroup and substr($isi,0,strlen("/users")) == "/users"){
             'user_name', 'user_id', 'name',
         ],["last_active"=>"desc"]);
         foreach($sdata as $row){        
-            $output .= "/id_".$row['user_id']." ".substr($row['name'],0,6);
+            $output .= "/id_".$row['user_id']." ".explode(" ",$row['name'])[0];//substr($row['name'],0,6);
             if(strlen($row['name'])>6){
                 $output .= "..\n";
             }
@@ -1215,7 +1215,7 @@ elseif($chatid == $admingroup and substr($isi,0,strlen("/users")) == "/users"){
             'user_name', 'user_id', 'name',
         ]);
         foreach($sdata as $row){        
-            $output .= "/id_".$row['user_id']." ".substr($row['name'],0,6);
+            $output .= "/id_".$row['user_id']." ".explode(" ",$row['name'])[0];//substr($row['name'],0,6);
             if(strlen($row['name'])>6){
                 $output .= "..\n";
             }
