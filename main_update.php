@@ -3383,20 +3383,22 @@ or strpos($isi,"@indogamebot") !== false
     $output = "";
     foreach($activeusers as $key=>$val){
         if($val['admin_active'] == '1'){
-            $output .= $val['user_name'] . "\n";
+            $output .= "<a href='tg://user?id=".$val["user_id"]."'>".$val['name']."</a>\n";
         }
     }
-    $data = array(
-        'chat_id' => $admingroup,
-        'text'=> $output,
-        'parse_mode'=>'HTML',
-        'disable_web_page_preview'=>true,
-        );
-    $hasil = KirimPerintahX($token,'sendMessage',$data);
-    // $message_out = json_decode($hasil,true);
-    $message_out = $hasil;
-    $keymessaggeid = $keynya."l".$message_id;
-    $admin_mentions[$keymessaggeid]=$message_out['result']['message_id'];
+    if($output){
+        $data = array(
+            'chat_id' => $admingroup,
+            'text'=> $output,
+            'parse_mode'=>'HTML',
+            'disable_web_page_preview'=>true,
+            );
+        $hasil = KirimPerintahX($token,'sendMessage',$data);
+        // $message_out = json_decode($hasil,true);
+        $message_out = $hasil;
+        $keymessaggeid = $keynya."l".$message_id;
+        $admin_mentions[$keymessaggeid]=$message_out['result']['message_id'];        
+    }
 }
 
 elseif(($chatid == $admingroup or in_array($chatid,$groups) or $jenis == "private")
