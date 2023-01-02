@@ -167,16 +167,16 @@ function sdata_find($table, $filter, $limit, $return_fields = [], $order = [], $
                 print_r($ordered_ids);
                 echo "</p>";
             }
-            if(count($ordered_ids) > $limit){
-                foreach($ordered_ids as $k=>$v){
-                    if($k >= $limit) unset($ordered_ids[$k]);
-                }
-            }
             if($debug){
                 echo "<p> limit$limit ";
                 echo " ordered_ids=";
                 print_r($ordered_ids);
                 echo "</p>";
+            }
+        }
+        if(count($ordered_ids) > $limit){
+            foreach($ordered_ids as $k=>$v){
+                if($k >= $limit) unset($ordered_ids[$k]);
             }
         }
     }
