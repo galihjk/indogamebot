@@ -51,7 +51,7 @@ foreach($bot_config as $bot=>$config){
     // $starting_notif = loadData("starting_notif_$bot",90);
     // $update_interval_def = loadData("update_interval_def_$bot",90);
     // $update_interval_rnd = loadData("update_interval_rnd_$bot",60);
-    $update_interval = loadData("update_interval_def_$bot",$update_interval_def);
+    $update_interval = loadData("update_interval_$bot",0);
     $updateuser = loadData("updateuser_$bot",[]);
     $debugmode = loadData("debugmode_$bot",false);
     $gamedata = loadData("gamedata_$bot",[]);
@@ -121,7 +121,7 @@ foreach($bot_config as $bot=>$config){
 		$updateuser = [];
 	}
     
-    saveData("update_interval_def_$bot",$update_interval_def);
+    saveData("update_interval_$bot",$update_interval);
     saveData("updateuser_$bot",$updateuser);
     saveData("debugmode_$bot",$debugmode);
     saveData("gamedata_$bot",$gamedata);
