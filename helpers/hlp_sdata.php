@@ -130,6 +130,10 @@ function sdata_find($table, $filter, $limit, $return_fields = [], $order = [], $
                     $ordered_ids[] = $item;
                 }
             }
+            if($debug){
+                echo "ordered_ids:";
+                print_r($ordered_ids);
+            }
             foreach($ordered_ids as $id){
                 $val = sdata_get_one($table, $id, [$field])[$field];
                 if(!empty($filter[$field])){
