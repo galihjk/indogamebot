@@ -130,10 +130,6 @@ function sdata_find($table, $filter, $limit, $return_fields = [], $order = [], $
                     $ordered_ids[] = $item;
                 }
             }
-            if($debug){
-                echo "ordered_ids:";
-                print_r($ordered_ids);
-            }
             foreach($ordered_ids as $id){
                 $val = sdata_get_one($table, $id, [$field])[$field];
                 if(!empty($filter[$field])){
@@ -146,6 +142,11 @@ function sdata_find($table, $filter, $limit, $return_fields = [], $order = [], $
                     else{
                         $find_val = $filter[$field];
                     }
+                    echo "<p>";
+                    if($debug){
+                        print_r([$val, $find_val, $type, str_compare($val, $find_val, $type)]);
+                    }
+                    echo "</p>";
                     if(!str_compare($val, $find_val, $type)) continue;
                 }
                 $sortdata[$id] = (is_numeric($val) ? (int) $val : strtolower($val));
