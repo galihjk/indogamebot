@@ -1192,6 +1192,15 @@ elseif($chatid == $admingroup and $isi == "/botadmin"){
         'reply_to_message_id'=>$message_id
     ]);
 }
+elseif($chatid == $admingroup and substr($isi,0,strlen("/backupdata")) == "/backupdata"){
+    $data = array(
+        'chat_id' => $admingroup,
+        'text'=> "underconstruction",
+        'parse_mode'=>'HTML',
+        'disable_web_page_preview'=>true
+    );
+    $hasil = KirimPerintahX($token,'sendMessage',$data);
+}
 elseif($chatid == $admingroup and substr($isi,0,strlen("/users")) == "/users"){
     $output = "users (by last_active):\n";
     $wherecommand = strtolower(trim(str_ireplace("/users","",$isi)));
